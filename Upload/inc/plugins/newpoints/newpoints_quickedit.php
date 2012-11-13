@@ -53,7 +53,7 @@ function newpoints_quickedit_info()
 		'website'		=> 'http://udezain.com.ar',
 		'author'		=> 'Omar G.',
 		'authorsite'	=> 'http://udezain.com.ar',
-		'version'		=> '1.0',
+		'version'		=> '1.0.1',
 		'compatibility'	=> '16*',
 		'codename'		=> 'quickedit',
 	);
@@ -231,7 +231,7 @@ function newpoints_quickedit_start()
 {
 	global $mybb, $db, $lang, $theme, $header, $templates, $headerinclude, $footer, $options;
 	newpoints_lang_load("newpoints_quickedit");
-	if($mybb->settings['newpoints_quickedit_on'] != 0)
+	if($mybb->settings['newpoints_quickedit_on'] != 0 && ($mybb->input['action'] == "quickedit" || $mybb->input['action'] == "do_quickedit"))
 	{
 		$uid = intval($mybb->input['uid']);
 		$pid = intval($mybb->input['pid']);
