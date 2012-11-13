@@ -2,16 +2,17 @@
 
 /***************************************************************************
  *
- *   Newpoints Quick Edit plugin.
- *	 Author: Sama34 (Omar Gonzalez)
+ *   Newpoints Quick Edit plugin (/inc/plugins/newpoints/newpoints_quickedit.php)
+ *	 Author: Omar Gonzalez
+ *   Copyright: © 2012 Omar Gonzalez
  *   
- *   Website: http://udezain.com.ar
+ *   Website: http://community.mybb.com/user-25096.html
  *
- *   Allows administrators and global moderator to edit data without accessing the ACP.
+ *   Quickly edit user's points without accessing to the ACP.
  *
- ***************************************************************************/
-
-/****************************************************************************
+ ***************************************************************************
+ 
+****************************************************************************
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
@@ -48,14 +49,13 @@ function newpoints_quickedit_info()
 	newpoints_lang_load("newpoints_quickedit");
 
 	return array(
-		'name'			=> $lang->quickedit_plugin_n,
+		'name'			=> 'Quick Edit Points',
 		'description'	=> $lang->quickedit_plugin_d,
-		'website'		=> 'http://udezain.com.ar',
-		'author'		=> 'Omar G.',
-		'authorsite'	=> 'http://udezain.com.ar',
-		'version'		=> '1.1',
-		'compatibility'	=> '16*',
-		'codename'		=> 'quickedit',
+		'website'		=> 'http://forums.mybb-plugins.com/Thread-Plugin-Quick-Edit-1-1',
+		'author'		=> 'Omar Gonzalez',
+		'authorsite'	=> 'http://community.mybb.com/user-25096.html',
+		'version'		=> '1.2',
+		'compatibility'	=> '19*'
 	);
 }
 function newpoints_quickedit_activate()
@@ -236,8 +236,8 @@ function newpoints_quickedit_start()
 		global $db, $lang, $theme, $header, $templates, $headerinclude, $footer, $options;
 		newpoints_lang_load("newpoints_quickedit");
 
-		$mybb->input['uid'] = intval($mybb->input['uid']);
-		$mybb->input['pid'] = intval($mybb->input['pid']);
+		$mybb->input['uid'] = (int)$mybb->input['uid'];
+		$mybb->input['pid'] = (int)$mybb->input['pid'];
 
 		$colums = '';
 		//*\\ Newpoints Shop Code START //*\\
@@ -289,7 +289,7 @@ function newpoints_quickedit_start()
 			}
 
 			// Add/remove points now...
-			$mybb->input['points'] = (intval($mybb->input['points']) < 0 ? 0 : intval($mybb->input['points']));
+			$mybb->input['points'] = ((float)$mybb->input['points'] < 0 ? 0 : (float)$mybb->input['points']);
 			newpoints_addpoints($user['uid'], $mark.$mybb->input['points']);
 
 			//*\\ Newpoints Shop Code START //*\\
@@ -324,7 +324,7 @@ function newpoints_quickedit_start()
 								unset($user_items[$key]);
 								if($mybb->settings['newpoints_quickedit_shop_stock'] == 1)
 								{
-									$db->update_query('newpoints_shop_items', array('stock' => intval($check_item['stock'])+1), "iid='{$check_item['iid']}'");
+									$db->update_query('newpoints_shop_items', array('stock' => ((int)$check_item['stock'])+1), "iid='{$check_item['iid']}'");
 								}
 							}
 						}
@@ -368,7 +368,7 @@ function newpoints_quickedit_start()
 				$query = $db->simple_select('newpoints_shop_items', 'iid, name, icon', 'visible=1 AND iid IN ('.implode(',', array_unique($items)).')', array('order_by' => 'disporder'));
 				while($item = $db->fetch_array($query))
 				{
-					$item['iid'] = intval($item['iid']);
+					$item['iid'] = (int)$item['iid'];
 					$item['name'] = htmlspecialchars_uni($item['name']);
 					$item['icon'] = htmlspecialchars_uni((!empty($item['icon']) ? $item['icon'] : 'images/newpoints/default.png'));
 					$tabindex = $item['iid']+10;
