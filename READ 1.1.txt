@@ -1,0 +1,5 @@
+Many ideas were taken from Pirata Nervo's Nepoints plugins, to make this plugin work with those.
+
+And maybe (can not recall exactly, to be honest), some code may have been copied as well.
+
+Many thanks anyways!!

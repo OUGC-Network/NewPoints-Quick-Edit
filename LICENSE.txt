@@ -1,6 +1,6 @@
-A MyBB Plugin which adds the possibility to have HTML in posts for certain user groups, users and in certain forums.
+Newpoints Quick Edit  - Allows administrators and global moderator to edit data without accessing the ACP.
 
-Copyright (C) 2010  Pirata Nervo
+Copyright (C) 2012 Omar Gonzalez
 
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007

@@ -2,12 +2,12 @@
 
 /***************************************************************************
  *
- *   Newpoints Quick Edit plugin (/inc/plugins/newpoints/newpoints_quickedit.php)
- *	 Author: Sama34 (Omar G.)
+ *   Newpoints Quick Edit plugin.
+ *	 Author: Sama34 (Omar Gonzalez)
  *   
  *   Website: http://udezain.com.ar
  *
- *   Allows administrators and global moderator to edit points without accessing the ACP.
+ *   Allows administrators and global moderator to edit data without accessing the ACP.
  *
  ***************************************************************************/
 
@@ -53,7 +53,7 @@ function newpoints_quickedit_info()
 		'website'		=> 'http://udezain.com.ar',
 		'author'		=> 'Omar G.',
 		'authorsite'	=> 'http://udezain.com.ar',
-		'version'		=> '1.0.1',
+		'version'		=> '1.1',
 		'compatibility'	=> '16*',
 		'codename'		=> 'quickedit',
 	);
@@ -82,31 +82,20 @@ function newpoints_quickedit_activate()
 <td valign="top">
 			<form action="{$mybb->settings[\'bburl\']}/newpoints.php" method="post" enctype="multipart/form-data" name="input">
 				<input type="hidden" name="my_post_key" value="{$mybb->post_code}" />
-				<input type="hidden" name="action" value="do_quickedit" />
-				<input type="hidden" name="uid" value="{$uid}" />
-				<input type="hidden" name="pid" value="{$pid}" />
-
-
-
+				<input type="hidden" name="action" value="quickedit" />
+				<input type="hidden" name="uid" value="{$mybb->input[\'uid\']}" />
+				<input type="hidden" name="pid" value="{$mybb->input[\'pid\']}" />
 	<table border="0" cellspacing="{$theme[\'borderwidth\']}" cellpadding="{$theme[\'tablespace\']}" class="tborder">
-		<tr><td class="thead" colspan="2"><strong>{$lang->quickedit_editing_1_points}</strong></td></tr>
-		<tr><td class="tcat" colspan="2"><strong>{$lang->quickedit_editing_desc}</strong></td></tr>
+		<tr><td class="thead" colspan="2"><strong>{$lang->quickedit_editing_points}</strong></td></tr>
+		<tr><td class="tcat smalltext" colspan="2"><strong>{$lang->quickedit_editing_desc}</strong></td></tr>
 		<tr>
-			<td class="trow1" style="white-space:nowrap;"><strong>{$lang->quickedit_currentpoints}</strong></td>
-			<td class="trow1" width="100%">{$user[\'newpoints\']}</td>
-		</tr>
-		<tr>
-			<td class="trow1" style="white-space:nowrap;"><strong>{$lang->quickedit_edit_points_desc}</strong></td>
-			<td class="trow1" width="100%">
-				<input type="text" class="textbox" name="points" value="0" />
+			<td class="{$trow}" style="white-space:nowrap;"><strong>{$lang->quickedit_edit_points_desc}</strong><br /><span class="smalltext">({$lang->quickedit_current}: {$user[\'newpoints\']})</span></td>
+			<td class="{$trow}" width="100%">
+				<input type="text" class="textbox" name="points" value="0" /> <label><input name="points_action" type="radio" value="add" checked="checked" /> {$lang->quickedit_action_add}</label> <label><input name="points_action" type="radio" value="remove" /> {$lang->quickedit_action_remove}</label>
 			</td>
 		</tr>
-		<tr>
-			<td class="trow1" style="white-space:nowrap;"><strong>{$lang->quickedit_action}</strong></td>
-			<td class="trow1">
-				<label><input name="points_action" type="radio" value="add" checked="checked" value="" /> {$lang->quickedit_action_add}</label> <label><input name="points_action" type="radio" value="remove" value="" /> {$lang->quickedit_action_remove}</label>
-			</td>
-		</tr>
+		{$newpoints_bank}
+		{$newpoints_shop}
 		<tr>
 			<td class="thead" colspan="2" align="center">
 				<input type="submit" class="button" name="submit" value="{$lang->go}" tabindex="4" accesskey="s" />
@@ -122,6 +111,22 @@ function newpoints_quickedit_activate()
 </html>', "-1");
 	newpoints_add_template("newpoints_quickedit_profile", '[<a href="{$mybb->settings[\'bburl\']}/newpoints.php?action=quickedit&amp;uid={$memprofile[\'uid\']}">{$lang->quickedit_edit_points}</a>]', "-1");
 	newpoints_add_template("newpoints_quickedit_postbit", '[<a href="{$mybb->settings[\'bburl\']}/newpoints.php?action=quickedit&amp;uid={$post[\'uid\']}&amp;pid={$post[\'pid\']}">{$lang->quickedit_edit_points}</a>]', "-1");
+	newpoints_add_template("newpoints_quickedit_shop", '<tr>
+			<td class="{$trow}" style="white-space:nowrap;"><strong>{$lang->quickedit_edit_shop_desc}</strong></td>
+			<td class="{$trow}" width="100%">
+				<div style="max-height:200px;overflow:auto;">
+					{$shop_items}
+				</div>
+			</td>
+		</tr>', "-1");
+	newpoints_add_template("newpoints_quickedit_shop_item", '<a href="{$mybb->settings[\'bburl\']}/newpoints.php?action=shop&amp;shop_action=view&amp;iid={$item[\'iid\']}"><img src="{$mybb->settings[\'bburl\']}/{$item[\'icon\']}" title="{$item[\'name\']}" style="vertical-align: middle;" /></a>
+<label><input type="checkbox" class="checkbox" name="items[]" value="{$item[\'iid\']}" tabindex="{$tabindex}" /> {$item[\'name\']}</label>', "-1");
+	newpoints_add_template("newpoints_quickedit_bank", '<tr>
+			<td class="{$trow}" style="white-space:nowrap;"><strong>{$lang->quickedit_edit_bank_desc}</strong><br /><span class="smalltext">({$lang->quickedit_current}: {$user[\'newpoints_bankoffset\']})</span></td>
+			<td class="{$trow}" width="100%">
+				<input type="text" class="textbox" name="newpoints_bankoffset" value="{$newpoints_bankoffset}" />
+			</td>
+		</tr>', "-1");
 	// Modify the postbit template to add the link variable.
 	require_once MYBB_ROOT.'/inc/adminfunctions_templates.php';
 	find_replace_templatesets('newpoints_postbit', '#'.preg_quote('{$donate}').'#', '{$donate}{$quickedit}');
@@ -131,7 +136,7 @@ function newpoints_quickedit_deactivate()
 {
 	global $mybb;
 	// Remove the plugin template.
-	newpoints_remove_templates("'newpoints_quickedit', 'newpoints_quickedit_profile','newpoints_quickedit_postbit'");
+	newpoints_remove_templates("'newpoints_quickedit', 'newpoints_quickedit_profile', 'newpoints_quickedit_postbit', 'newpoints_quickedit_shop', 'newpoints_quickedit_shop_item', 'newpoints_quickedit_bank'");
 	// Modify the postbit template to remove the link variable.
 	require_once MYBB_ROOT.'/inc/adminfunctions_templates.php';
 	find_replace_templatesets('newpoints_postbit', '#'.preg_quote('{$quickedit}').'#', '',0);
@@ -144,8 +149,10 @@ function newpoints_quickedit_install()
 
 	// Now we can insert them so everything is clean.
 	newpoints_lang_load("newpoints_quickedit");
-	newpoints_add_setting("newpoints_quickedit_on", "main", $lang->quickedit_on_n, $lang->quickedit_on_d, "yesno", "0", "7");
-	rebuild_settings();
+	newpoints_add_setting("newpoints_quickedit_on", "main", $lang->quickedit_on_n, $lang->quickedit_on_d, "yesno", 0, 7);
+	newpoints_add_setting("newpoints_quickedit_shop_on", "newpoints_shop", $lang->quickedit_shop_on_n, $lang->quickedit_shop_on_d, "yesno", 0, -2);
+	newpoints_add_setting("newpoints_quickedit_shop_stock", "newpoints_shop", $lang->quickedit_shop_stock_n, $lang->quickedit_shop_stock_d, "yesno", 0, -1);
+	newpoints_add_setting("newpoints_quickedit_bank_on", "newpoints_bank", $lang->quickedit_bank_on_n, $lang->quickedit_bank_on_d, "yesno", 0, 5);
 }
 function newpoints_quickedit_uninstall()
 {
@@ -153,7 +160,6 @@ function newpoints_quickedit_uninstall()
 
 	// Remove the plugin settings.
 	newpoints_remove_settings("'newpoints_quickedit_on'");
-	rebuild_settings();
 
 	// Clean any logs from this plugin.
 	newpoints_remove_log(array("quickedit"));
@@ -191,124 +197,203 @@ function newpoints_quickedit_postbit(&$post)
 {
 	global $mybb;
 
-	if($mybb->settings['newpoints_quickedit_on'] != 0)
+	if($mybb->settings['newpoints_quickedit_on'] == 1)
 	{
 		global $lang, $templates, $currency, $points, $quickedit, $donate;
 		newpoints_lang_load("newpoints_quickedit");
 
-		if($mybb->usergroup['cancp'] != 0 || $mybb->usergroup['issupermod'] != 0 && $post['uid'] != $mybb->user['uid'])
+		$quickedit = '';
+		if($mybb->usergroup['cancp'] == 1 || ($mybb->usergroup['issupermod'] == 1 &&  $post['uid'] != $mybb->user['uid']))
 		{
 			eval('$quickedit = "'.$templates->get("newpoints_quickedit_postbit").'";');
+			eval("\$post['newpoints_postbit'] = \"".$templates->get('newpoints_postbit')."\";");
 		}
-		else
-		{
-			$quickedit = '';
-		}
-		eval("\$post['newpoints_postbit'] = \"".$templates->get('newpoints_postbit')."\";");
 	}
 }
 function newpoints_quickedit_profile()
 {
 	global $mybb;
 
-	if($mybb->settings['newpoints_quickedit_on'] != 0)
+	if($mybb->settings['newpoints_quickedit_on'] == 1)
 	{
 		global $templates, $lang, $memprofile, $newpoints_profile, $quickedit, $currency, $points;
 		newpoints_lang_load("newpoints_quickedit");
 
-		if($mybb->usergroup['cancp'] != 0 || $mybb->usergroup['issupermod'] != 0 && $memprofile['uid'] != $mybb->user['uid'])
+		$quickedit = '';
+		if($mybb->usergroup['cancp'] == 1 || ($mybb->usergroup['issupermod'] == 1 &&  $post['uid'] != $mybb->user['uid']))
 		{
 			eval('$quickedit = "'.$templates->get("newpoints_quickedit_profile").'";');
+			eval("\$newpoints_profile = \"".$templates->get('newpoints_profile')."\";");
 		}
-		else
-		{
-			$quickedit = '';
-		}
-		eval("\$newpoints_profile = \"".$templates->get('newpoints_profile')."\";");
 	}
 }
 function newpoints_quickedit_start()
 {
-	global $mybb, $db, $lang, $theme, $header, $templates, $headerinclude, $footer, $options;
-	newpoints_lang_load("newpoints_quickedit");
-	if($mybb->settings['newpoints_quickedit_on'] != 0 && ($mybb->input['action'] == "quickedit" || $mybb->input['action'] == "do_quickedit"))
+	global $mybb;
+
+	if($mybb->settings['newpoints_quickedit_on'] == 1 && $mybb->input['action'] == 'quickedit' && ($mybb->usergroup['cancp'] == 1 || $mybb->usergroup['cancp'] == 1))
 	{
-		$uid = intval($mybb->input['uid']);
-		$pid = intval($mybb->input['pid']);
+		global $db, $lang, $theme, $header, $templates, $headerinclude, $footer, $options;
+		newpoints_lang_load("newpoints_quickedit");
+
+		$mybb->input['uid'] = intval($mybb->input['uid']);
+		$mybb->input['pid'] = intval($mybb->input['pid']);
+
+		$colums = '';
+		//*\\ Newpoints Shop Code START //*\\
+		if(function_exists('newpoints_shop_page') && $mybb->settings['newpoints_quickedit_shop_on'] == 1)
+		{
+			$colums .= ', newpoints_items';
+		}
+		//*\\ Newpoints Shop Code END //*\\
+		//*\\ Newpoints Bank Code START //*\\
+		if(function_exists('newpoints_bank_page') && $mybb->settings['newpoints_quickedit_bank_on'] == 1)
+		{
+			$colums .= ', newpoints_bankoffset, newpoints_bankbasetime';
+		}
+		//*\\ Newpoints Bank Code END //*\\
 	
-		$user = get_user($uid);
-			$user['uid'] = intval($user['uid']);
-			$user['newpoints'] = intval($user['newpoints']);
-			$user['username'] = htmlspecialchars_uni($user['username']);
-		// We want to use this feature in users profile, so lets figure out the link first..
-		if(isset($mybb->input['pid']) && !empty($pid))
+		$query = $db->simple_select("users", "uid, username, newpoints{$colums}", "uid='{$mybb->input['uid']}'");
+		$user = $db->fetch_array($query);
+
+		$trow = alt_trow();
+		$title = "{$lang->newpoints} {$lang->quick_edit} - {$mybb->settings['bbname']}";
+		// There is no user, show error.
+		if(!$user['uid'])
 		{
-			$link = $mybb->settings['bburl'].'/'.get_post_link($pid).'#pid'.$pid;
+			error($lang->quickedit_wronguser, $title);
 		}
-		else
-		{
-			$link = $mybb->settings['bburl'].'/'.get_profile_link($user['uid']);
-		}
-		// Is user a Administrator or Global Moderator? If not, show no permission page.
-		if($mybb->usergroup['cancp'] != 1 && $mybb->usergroup['issupermod'] != 1)
-		{
-			error_no_permission();
-		}
-		// Is user trying to edit its own points? If yes and it is not a administrator, show error page.
+		// Super moderators can not edit their own stuff.
 		if($user['uid'] == $mybb->user['uid'] && $mybb->usergroup['cancp'] != 1)
 		{
-			error($lang->quickedit_no_selftediting, $lang->quickedit_edit_points);
+			error($lang->quickedit_no_selftediting, $title);
 		}
-		// You are editing a valid user, right?
-		if($user['uid'] < 1)
-		{
-			error($lang->quickedit_wronguser, $lang->quickedit_edit_points);
-		}
-		if($mybb->input['action'] == 'quickedit')
-		{
-			// Get user's profile link and format points to look nice :)
-			$user['username'] = build_profile_link($user['username'], $user['uid']);
-			$user['newpoints'] = newpoints_format_points($user['newpoints']);
 
-			$lang->quickedit_editing_1_points = $lang->sprintf($lang->quickedit_editing_1_points, $user['username']);
-			add_breadcrumb($lang->edit_newpoints, "newpoints.php?action=quickedit");
-
-			// Output the page...
-			eval("\$quickedit = \"".$templates->get("newpoints_quickedit")."\";");
-			output_page($quickedit);
+		// Lets figure out the redirect link first..
+		$link = get_profile_link($user['uid']);
+		if($mybb->input['pid'] > 0)
+		{
+			$link = get_post_link($mybb->input['pid'])."#pid{$mybb->input['pid']}";
 		}
-		elseif($mybb->input['action'] == 'do_quickedit' && $mybb->request_method == 'post')
+		$link = $mybb->settings['bburl'].'/'.$link;
+		if($mybb->request_method == 'post')
 		{
 			//Verify the incoming post check to continue...
 			verify_post_check($mybb->input['my_post_key']);
+
 			//If the 'point_action' is 'remove', then remove points, otherwise, add..
+			$mark = "+";
 			if($mybb->input['points_action'] == "remove")
 			{
 				$mark = "-";
 			}
-			else
+
+			// Add/remove points now...
+			$mybb->input['points'] = (intval($mybb->input['points']) < 0 ? 0 : intval($mybb->input['points']));
+			newpoints_addpoints($user['uid'], $mark.$mybb->input['points']);
+
+			//*\\ Newpoints Shop Code START //*\\
+			if(function_exists('newpoints_shop_page') && !empty($user['newpoints_items']) && $mybb->input['items'] && $mybb->settings['newpoints_quickedit_shop_on'] == 1)
 			{
-				$mark = "+";
+				if(!is_array($mybb->input['items']))
+				{
+					$mybb->input['items'] = array();
+				}
+				$user_items = @unserialize($user['newpoints_items']);
+				foreach($mybb->input['items'] as $item)
+				{
+					if(!($check_item = newpoints_shop_get_item($item)))
+					{
+						error($lang->quickedit_wrongitem, $title);
+					}
+					elseif(!($check_cat = newpoints_shop_get_item($item)))
+					{
+						error($lang->quickedit_wrongitemcat, $title);
+					}
+					else
+					{
+						if(!empty($user_items))
+						{
+							$key = array_search($check_item['iid'], $user_items);
+							if($key === false)
+							{
+								error($lang->quickedit_wrongitem, $title);
+							}
+							else
+							{
+								unset($user_items[$key]);
+								if($mybb->settings['newpoints_quickedit_shop_stock'] == 1)
+								{
+									$db->update_query('newpoints_shop_items', array('stock' => intval($check_item['stock'])+1), "iid='{$check_item['iid']}'");
+								}
+							}
+						}
+					}
+				}
+				sort($user_items);
+				$db->update_query('users', array('newpoints_items' => serialize($user_items)), "uid='{$user['uid']}'");
 			}
-			// Add/remove them right now...
-			$points = $mark.floatval(intval($mybb->input['points']));
-			if($points == 0)
+			//*\\ Newpoints Shop Code END //*\\
+			//*\\ Newpoints Bank Code START //*\\
+			if(function_exists('newpoints_bank_page') && $mybb->settings['newpoints_quickedit_bank_on'] == 1 && $mybb->input['newpoints_bankoffset'] != $user['newpoints_bankoffset'])
 			{
-				error($lang->quickedit_points_invalid);
+				$db->update_query('users', array('newpoints_bankoffset' => floatval($mybb->input['newpoints_bankoffset'])), "uid='{$user['uid']}'");
 			}
-			newpoints_addpoints($user['uid'], $points);
-			// Lets log it...
-			$lang->quickedit_log = $lang->sprintf($lang->quickedit_log, $user['username'], $points, $user['newpoints']);
+			//*\\ Newpoints Bank Code END //*\\
+
+			// Lets finish...
+			// TODO: We need to log the items that were removed / bank points being edited, right now we don't do so.
+			$lang->quickedit_log = $lang->sprintf($lang->quickedit_log, htmlspecialchars_uni($user['username']), newpoints_format_points($mybb->input['points']), newpoints_format_points($user['newpoints']));
 			newpoints_log("quickedit", $lang->quickedit_log, $mybb->user['username'], $mybb->user['uid']);
-			// Redirect to user's profile...
+
+			// We are done.
 			redirect($link, $lang->quickedit_edited);
 		}
-		else
+
+		// Get user's profile link and format points to look nice :)
+		$user['username'] = build_profile_link($user['username'], $user['uid']);
+		$user['newpoints'] = newpoints_format_points($user['newpoints']);
+
+		$lang->quickedit_editing_points = $lang->sprintf($lang->quickedit_editing_points, $user['username']);
+		add_breadcrumb($lang->edit_newpoints, "newpoints.php?action=quickedit");
+
+		//*\\ Newpoints Shop Code START //*\\
+		$newpoints_shop = '';
+		if(function_exists('newpoints_shop_page') && !empty($user['newpoints_items']) && $mybb->settings['newpoints_quickedit_shop_on'] == 1)
 		{
-			error_no_permission();
+			$items = unserialize($user['newpoints_items']);
+			$shop_items = '';
+			if(!empty($items))
+			{
+				$query = $db->simple_select('newpoints_shop_items', 'iid, name, icon', 'visible=1 AND iid IN ('.implode(',', array_unique($items)).')', array('order_by' => 'disporder'));
+				while($item = $db->fetch_array($query))
+				{
+					$item['iid'] = intval($item['iid']);
+					$item['name'] = htmlspecialchars_uni($item['name']);
+					$item['icon'] = htmlspecialchars_uni((!empty($item['icon']) ? $item['icon'] : 'images/newpoints/default.png'));
+					$tabindex = $item['iid']+10;
+					eval("\$shop_items .= \"".$templates->get("newpoints_quickedit_shop_item")."\";");
+				}
+				eval("\$newpoints_shop = \"".$templates->get("newpoints_quickedit_shop")."\";");
+			}
 		}
+		//*\\ Newpoints Shop Code END //*\\
+		//*\\ Newpoints Bank Code START //*\\
+		$newpoints_bank = '';
+		if(function_exists('newpoints_bank_page') && $mybb->settings['newpoints_quickedit_bank_on'] == 1)
+		{
+			$newpoints_bankoffset = $user['newpoints_bankoffset'];
+			$user['newpoints_bankoffset'] = newpoints_format_points($user['newpoints_bankoffset']);
+			eval("\$newpoints_bank = \"".$templates->get("newpoints_quickedit_bank")."\";");
+		}
+		//*\\ Newpoints Bank Code END //*\\
+
+		// Output the page...
+		eval("\$page = \"".$templates->get("newpoints_quickedit")."\";");
+		output_page($page);
+		exit;
 	}
-	elseif($mybb->input['action'] == "quickedit" || $mybb->input['action'] == "do_quickedit")
+	elseif($mybb->input['action'] == "quickedit")
 	{
 		error_no_permission();
 	}

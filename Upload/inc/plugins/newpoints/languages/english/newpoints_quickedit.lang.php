@@ -2,12 +2,12 @@
 
 /***************************************************************************
  *
- *   Newpoints Quick Edit plugin (/inc/plugins/newpoints/newpoints_quickedit.php)
- *	 Author: Sama34 (Omar G.)
+ *   Newpoints Quick Edit plugin.
+ *	 Author: Sama34 (Omar Gonzalez)
  *   
  *   Website: http://udezain.com.ar
  *
- *   Allows administrators and global moderator to edit points without accessing the ACP.
+ *   Allows administrators and global moderator to edit data without accessing the ACP.
  *
  ***************************************************************************/
 
@@ -26,17 +26,20 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-$l['quickedit_edit_points'] = "Edit Points";
-$l['quieck_edit'] = "Editing User Points";
-$l['quickedit_editing_1_points'] = "Editing {1} Points";
-$l['quickedit_editing_desc'] = "Here you can edit users newpoints points without accessing the ACP.";
-$l['quickedit_currentpoints'] = "Current Points:";
-$l['quickedit_edit_points_desc'] = "Enter the points to add / remove to this user:";
-$l['quickedit_action'] = "Action:";
-$l['quickedit_action_add'] = "Add points";
-$l['quickedit_action_remove'] = "Remove points";
+$l['quickedit_edit_points'] = "Edit User";
+$l['quick_edit'] = "Quick Edit";
+$l['quickedit_editing_points'] = "Editing {1} Newpoints Data";
+$l['quickedit_editing_desc'] = "Here you can edit users newpoints data without accessing the ACP.";
+$l['quickedit_current'] = "Current";
+$l['quickedit_edit_points_desc'] = "Edit This User Points:";
+$l['quickedit_edit_shop_desc'] = "Remove items:";
+$l['quickedit_edit_bank_desc'] = "Edit This User Bank Points:";
+$l['quickedit_action_add'] = "Add";
+$l['quickedit_action_remove'] = "Remove";
 $l['quickedit_no_selftediting'] = "You do not have permission to edit your own points.";
 $l['quickedit_wronguser'] = "The user you specified is wrong or invalid.";
+$l['quickedit_wrongitem'] = "One or more selected items are invalid.";
+$l['quickedit_wrongitemcat'] = "One or more selected items are invalid categories.";
 $l['quickedit_edited'] = "The user points were edited successfully.<br/><br/>Now you will be redirected to the user's profile.";
 $l['quickedit_log'] = "User: {1} / {2} points / Original Points: {3}";
 $l['quickedit_points_invalid'] = "You didn't enter a valid number, please go back and try again.";
