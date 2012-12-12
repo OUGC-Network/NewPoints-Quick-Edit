@@ -51,7 +51,7 @@ function newpoints_quickedit_info()
 	return array(
 		'name'			=> 'Quick Edit Points',
 		'description'	=> $lang->quickedit_plugin_d,
-		'website'		=> 'http://forums.mybb-plugins.com/Thread-Plugin-Quick-Edit-1-1',
+		'website'		=> 'http://forums.mybb-plugins.com/Thread-Plugin-Quick-Edit',
 		'author'		=> 'Omar Gonzalez',
 		'authorsite'	=> 'http://community.mybb.com/user-25096.html',
 		'version'		=> '1.2',
