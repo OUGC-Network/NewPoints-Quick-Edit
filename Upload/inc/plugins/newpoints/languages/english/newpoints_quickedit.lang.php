@@ -2,7 +2,7 @@
 
 /***************************************************************************
  *
- *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/languages/english/newpoints_quickedit.lang.php)
+ *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/languages/english/newpoints_quick_edit.lang.php)
  *    Author: Omar Gonzalez
  *    Copyright: © 2012 Omar Gonzalez
  *
@@ -26,20 +26,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-$l['quickedit_edit_points'] = 'Edit User';
-$l['quick_edit'] = 'Quick Edit';
-$l['quickedit_editing_points'] = 'Editing {1} Newpoints Data';
-$l['quickedit_editing_desc'] = 'Here you can edit users newpoints data without accessing the ACP.';
-$l['quickedit_current'] = 'Current';
-$l['quickedit_edit_points_desc'] = 'Edit This User Points:';
-$l['quickedit_edit_shop_desc'] = 'Remove items:';
-$l['quickedit_edit_bank_desc'] = 'Edit This User Bank Points:';
-$l['quickedit_action_add'] = 'Add';
-$l['quickedit_action_remove'] = 'Remove';
-$l['quickedit_no_selftediting'] = 'You do not have permission to edit your own points.';
-$l['quickedit_wronguser'] = 'The user you specified is wrong or invalid.';
-$l['quickedit_wrongitem'] = 'One or more selected items are invalid.';
-$l['quickedit_wrongitemcat'] = 'One or more selected items are invalid categories.';
-$l['quickedit_edited'] = 'The user points were edited successfully.<br/><br/>Now you will be redirected to the user\'s profile.';
-$l['quickedit_log'] = 'User: {1} / {2} points / Original Points: {3}';
-$l['quickedit_points_invalid'] = 'You did not enter a valid number, please go back and try again.';
+$l['newpoints_quick_edit_page_title'] = 'Edit User';
+$l['newpoints_quick_edit_page_nav'] = 'Edit User';
+
+$l['newpoints_quick_edit_table_title'] = 'Editing {1}';
+$l['newpoints_quick_edit_table_description'] = 'Here you can edit users Newpoints data.';
+$l['newpoints_quick_edit_table_edit_title'] = 'Edit points';
+$l['newpoints_quick_edit_table_current'] = 'Current points';
+
+$l['newpoints_quick_edit_invalid_user'] = 'The user you specified is wrong or invalid.';
+
+$l['newpoints_quick_edit_log_item'] = 'User: {1} / {2} points / Original Points: {3}';
+
+$l['newpoints_quick_edit_redirect_successful'] = 'The user Newpoints data was updated successfully.<br/><br/>You will now be redirected to the previous page.';
+
+$l['newpoints_quick_edit_post_bit'] = 'Edit points';
+
+$l['newpoints_quick_edit_profile'] = 'Edit points';
+
+$l['newpoints_quick_edit_edit_shop_desc'] = 'Remove items';
+$l['newpoints_quick_edit_edit_bank_desc'] = 'Edit This User Bank Points';
+$l['newpoints_quick_edit_wrong_item'] = 'One or more selected items are invalid.';
+$l['newpoints_quick_edit_wrong_item_category'] = 'One or more selected items are invalid categories.';

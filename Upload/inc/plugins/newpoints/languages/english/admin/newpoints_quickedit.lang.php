@@ -37,4 +37,4 @@ $l['setting_newpoints_quickedit_shop_on_desc'] = 'Set to yes if you want adminis
 $l['setting_newpoints_quickedit_shop_stock'] = 'Increase Item Stock';
 $l['setting_newpoints_quickedit_shop_stock_desc'] = 'Set to yes if you want items to be increased by 1 when removing users items.';
 $l['setting_newpoints_quickedit_bank_on'] = 'Enable Quick Edit';
-$l['setting_newpoints_quickedit_bank_on_desc'] = 'Set to yes if you want bank points being able to be edited poutside the ACP..';
+$l['setting_newpoints_quickedit_bank_on_desc'] = 'Set to yes if you want bank points being able to be edited poutside the ACP.';

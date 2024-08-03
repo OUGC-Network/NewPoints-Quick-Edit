@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>{$mybb->settings['bbname']} - {$lang->newpoints} {$lang->quieck_edit}</title>
+    <title>{$mybb->settings['bbname']} - {$lang->newpoints} {$lang->newpoints_quick_edit_page_title}</title>
     {$headerinclude}
 </head>
 <body>
@@ -17,23 +17,27 @@
             </table>
         </td>
         <td valign="top">
-            <form action="{$mybb->settings['bburl']}/newpoints.php" method="post" enctype="multipart/form-data"
-                  name="input">
+            <form action="{$mybb->settings['bburl']}/newpoints.php" method="post" name="input">
                 <input type="hidden" name="my_post_key" value="{$mybb->post_code}"/>
-                <input type="hidden" name="action" value="quickedit"/>
-                <input type="hidden" name="uid" value="{$mybb->input['uid']}"/>
-                <input type="hidden" name="pid" value="{$mybb->input['pid']}"/>
+                <input type="hidden" name="action" value="quick_edit"/>
+                <input type="hidden" name="uid" value="{$userID}"/>
+                <input type="hidden" name="pid" value="{$postID}"/>
                 <table border="0" cellspacing="{$theme['borderwidth']}" cellpadding="{$theme['tablespace']}"
                        class="tborder">
                     <tr>
-                        <td class="thead" colspan="2"><strong>{$lang->quickedit_editing_points}</strong></td>
+                        <td class="thead" colspan="2"><strong>{$form_title}</strong></td>
                     </tr>
                     <tr>
-                        <td class="tcat smalltext" colspan="2"><strong>{$lang->quickedit_editing_desc}</strong></td>
+                        <td class="tcat smalltext" colspan="2">
+                            <strong>{$lang->newpoints_quick_edit_table_description}</strong></td>
                     </tr>
                     <tr>
-                        <td class="{$trow}" style="white-space:nowrap;" colspan="2">
-                            <strong>{$lang->quickedit_edit_points_desc}</strong><br/><span class="smalltext">({$lang->quickedit_current}: {$user['newpoints']})</span>
+                        <td class="{$trow}" width="20%">
+                            <strong>{$lang->newpoints_quick_edit_table_edit_title}</strong><br/><span class="smalltext">({$lang->newpoints_quick_edit_table_current}: {$userPoints})</span>
+                        </td>
+                        <td class="{$trow}">
+                            <input type="number" class="textbox" name="userPoints" size="10" step=".01"
+                                   style="min-width: 5em;">
                         </td>
                     </tr>
                     {$newpoints_bank}

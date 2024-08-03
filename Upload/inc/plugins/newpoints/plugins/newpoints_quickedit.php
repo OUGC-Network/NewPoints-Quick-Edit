@@ -26,6 +26,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
+declare(strict_types=1);
+
+use function Newpoints\Core\templates_get;
 use function Newpoints\QuickEdit\Admin\plugin_activation;
 use function Newpoints\QuickEdit\Admin\plugin_deactivation;
 use function Newpoints\QuickEdit\Admin\plugin_information;
@@ -76,4 +79,19 @@ function newpoints_quickedit_uninstall(): bool
 function newpoints_quickedit_is_installed(): bool
 {
     return plugin_is_installed();
+}
+
+function newpoints_quickedit_get_template(string $template_name = '', bool $enable_html_comments = true): string
+{
+    return templates_get($template_name, $enable_html_comments, ROOT, 'quickedit_');
+}
+
+function newpoints_quickedit_shop_is_installed(): bool
+{
+    return function_exists('newpoints_shop_page');
+}
+
+function newpoints_quickedit_bank_is_installed(): bool
+{
+    return function_exists('newpoints_bank_page');
 }
