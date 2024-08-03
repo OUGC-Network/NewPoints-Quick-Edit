@@ -1,0 +1,7 @@
+<a href="{$mybb->settings['bburl']}/newpoints.php?action=shop&amp;shop_action=view&amp;iid={$item['iid']}">
+    <img src="{$mybb->settings['bburl']}/{$item['icon']}" title="{$item['name']}" style="vertical-align: middle;"/>
+</a>
+<label>
+    <input type="checkbox" class="checkbox" name="items[]" value="{$item['iid']}" tabindex="{$tabindex}"/>
+    {$item['name']}
+</label>

@@ -2,7 +2,7 @@
 
 /***************************************************************************
  *
- *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/languages/english/admin/newpoints_quickedit.lang.php)
+ *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/newpoints_quickedit.php)
  *    Author: Omar Gonzalez
  *    Copyright: © 2012 Omar Gonzalez
  *
@@ -26,15 +26,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-$l['quickedit_plugin_n'] = 'Quick Edit Points';
-$l['quickedit_plugin_d'] = 'Allows administrators and global moderator to edit points without accessing the ACP.';
-
-$l['setting_group_newpoints_quickedit'] = 'Quick Edit';
-$l['setting_group_newpoints_quickedit_desc'] = 'Quickly edit user\'s points without accessing to the ACP.';
-
-$l['setting_newpoints_quickedit_shop_on'] = 'Enable Quick Edit';
-$l['setting_newpoints_quickedit_shop_on_desc'] = 'Set to yes if you want administrators and global moderators be able to edit users items without accessing the ACP.';
-$l['setting_newpoints_quickedit_shop_stock'] = 'Increase Item Stock';
-$l['setting_newpoints_quickedit_shop_stock_desc'] = 'Set to yes if you want items to be increased by 1 when removing users items.';
-$l['setting_newpoints_quickedit_bank_on'] = 'Enable Quick Edit';
-$l['setting_newpoints_quickedit_bank_on_desc'] = 'Set to yes if you want bank points being able to be edited poutside the ACP..';
+// deprecated

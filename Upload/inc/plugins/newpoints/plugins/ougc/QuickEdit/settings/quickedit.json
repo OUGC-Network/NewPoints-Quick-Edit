@@ -1,0 +1,14 @@
+{
+  "shop_on": {
+    "type": "yesno",
+    "value": 0
+  },
+  "shop_stock": {
+    "type": "yesno",
+    "value": 0
+  },
+  "bank_on": {
+    "type": "yesno",
+    "value": 0
+  }
+}
