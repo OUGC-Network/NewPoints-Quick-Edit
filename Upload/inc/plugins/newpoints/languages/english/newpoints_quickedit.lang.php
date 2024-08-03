@@ -42,4 +42,4 @@ $l['quickedit_wrongitem'] = 'One or more selected items are invalid.';
 $l['quickedit_wrongitemcat'] = 'One or more selected items are invalid categories.';
 $l['quickedit_edited'] = 'The user points were edited successfully.<br/><br/>Now you will be redirected to the user\'s profile.';
 $l['quickedit_log'] = 'User: {1} / {2} points / Original Points: {3}';
-$l['quickedit_points_invalid'] = 'You didn\'t enter a valid number, please go back and try again.';
+$l['quickedit_points_invalid'] = 'You did not enter a valid number, please go back and try again.';
