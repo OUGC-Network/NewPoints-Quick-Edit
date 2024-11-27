@@ -8,7 +8,7 @@
  *
  *    Website: https://ougc.network
  *
- *    Quickly edit user's points without accessing to the ACP.
+ *    Quickly edit user's Newpoints data from the forums.
  *
  ***************************************************************************
  ****************************************************************************
@@ -30,7 +30,6 @@ declare(strict_types=1);
 
 use function Newpoints\Core\templates_get;
 use function Newpoints\QuickEdit\Admin\plugin_activation;
-use function Newpoints\QuickEdit\Admin\plugin_deactivation;
 use function Newpoints\QuickEdit\Admin\plugin_information;
 use function Newpoints\QuickEdit\Admin\plugin_is_installed;
 use function Newpoints\QuickEdit\Admin\plugin_uninstallation;
@@ -55,7 +54,6 @@ if (defined('IN_ADMINCP')) {
     add_hooks('Newpoints\QuickEdit\Hooks\Forum');
 }
 
-/*** Newpoints ACP side. ***/
 function newpoints_quickedit_info(): array
 {
     return plugin_information();
@@ -64,11 +62,6 @@ function newpoints_quickedit_info(): array
 function newpoints_quickedit_activate(): bool
 {
     return plugin_activation();
-}
-
-function newpoints_quickedit_deactivate(): bool
-{
-    return plugin_deactivation();
 }
 
 function newpoints_quickedit_uninstall(): bool
@@ -84,14 +77,4 @@ function newpoints_quickedit_is_installed(): bool
 function newpoints_quickedit_get_template(string $template_name = '', bool $enable_html_comments = true): string
 {
     return templates_get($template_name, $enable_html_comments, ROOT, 'quickedit_');
-}
-
-function newpoints_quickedit_shop_is_installed(): bool
-{
-    return function_exists('newpoints_shop_page');
-}
-
-function newpoints_quickedit_bank_is_installed(): bool
-{
-    return function_exists('newpoints_bank_page');
 }

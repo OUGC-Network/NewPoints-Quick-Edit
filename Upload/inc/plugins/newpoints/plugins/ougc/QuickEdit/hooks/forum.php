@@ -8,7 +8,7 @@
  *
  *    Website: https://ougc.network
  *
- *    Quickly edit user's points without accessing to the ACP.
+ *    Quickly edit user's Newpoints data from the forums.
  *
  ***************************************************************************
  ****************************************************************************
@@ -33,87 +33,92 @@ namespace Newpoints\QuickEdit\Hooks\Forum;
 use MyBB;
 
 use function Newpoints\Core\language_load;
+use function Newpoints\Core\log_add;
+use function Newpoints\Core\main_file_name;
 use function Newpoints\Core\points_add;
 use function Newpoints\Core\points_format;
 use function Newpoints\Core\run_hooks;
 use function Newpoints\Core\url_handler_build;
 
-function global_start(): bool
-{
-    if (in_array(THIS_SCRIPT, ['newpoints.php', 'showthread.php', 'member.php'])) {
-        global $templatelist;
-
-        if (isset($templatelist)) {
-            $templatelist .= ',';
-        } else {
-            $templatelist = '';
-        }
-
-        $templatelist .= 'newpoints_quickedit, newpoints_quickedit, newpoints_quickedit_profile';
-    }
-
-    return true;
-}
-
-function postbit50(array &$post): array
+function newpoints_global_start(array &$hook_arguments): array
 {
     global $mybb;
 
-    $currentUserID = (int)$mybb->user['uid'];
+    foreach (['newpoints.php', 'showthread.php', 'member.php'] as $script_name) {
+        $hook_arguments[$script_name] = array_merge(
+            $hook_arguments[$script_name] ?? [],
+            [
+                'newpoints_quickedit',
+                'newpoints_quickedit_bank',
+                'newpoints_quickedit_postbit',
+                'newpoints_quickedit_profile',
+            ]
+        );
+    }
 
-    $postUserID = (int)$post['uid'];
 
-    $postID = (int)$post['pid'];
+    return $hook_arguments;
+}
 
-    if (!empty($mybb->usergroup['cancp']) || (!empty($mybb->usergroup['issupermod']) && $postUserID !== $currentUserID)) {
+function postbit50(array &$post_data): array
+{
+    global $mybb;
+
+    $post_data['newpoints_quick_edit'] = '';
+
+    if (!empty($mybb->usergroup['newpoints_quick_edit_can_use'])) {
         global $lang;
 
         language_load('quickedit');
 
-        $pageUrl = url_handler_build(['action' => 'quick_edit', 'uid' => $postUserID, 'pid' => $postID]);
-
-        $quick_edit = eval(newpoints_quickedit_get_template('postbit'));
-
-        $post['newpoints_postbit'] = str_replace(
-            '<!--NEWPOINTS_QUICK_EDIT-->',
-            $quick_edit,
-            $post['newpoints_postbit']
+        $page_url = url_handler_build(
+            ['action' => 'quick_edit', 'uid' => (int)$post_data['uid'], 'pid' => (int)$post_data['pid']]
         );
+
+        $post_data['newpoints_quick_edit'] = eval(newpoints_quickedit_get_template('postbit'));
     }
 
-    return $post;
+    return $post_data;
 }
 
 function member_profile_end(): bool
 {
     global $mybb;
-    global $memprofile;
+    global $newpoints_quick_edit;
 
-    $currentUserID = (int)$mybb->user['uid'];
+    $newpoints_quick_edit = '';
 
-    $profileUserID = (int)$memprofile['uid'];
-
-    if (!empty($mybb->usergroup['cancp']) || (!empty($mybb->usergroup['issupermod']) && $profileUserID !== $currentUserID)) {
+    if (!empty($mybb->usergroup['newpoints_quick_edit_can_use'])) {
         global $lang;
-        global $newpoints_profile;
+        global $memprofile;
 
         language_load('quickedit');
 
-        $pageUrl = url_handler_build(['action' => 'quick_edit', 'uid' => $profileUserID]);
+        $page_url = url_handler_build(['action' => 'quick_edit', 'uid' => (int)$memprofile['uid']]);
 
-        $quick_edit = eval(newpoints_quickedit_get_template('profile'));
-
-        $newpoints_profile = str_replace(
-            '<!--NEWPOINTS_QUICK_EDIT-->',
-            $quick_edit,
-            $newpoints_profile
-        );
+        $newpoints_quick_edit = eval(newpoints_quickedit_get_template('profile'));
     }
 
     return true;
 }
 
-function newpoints_start(): bool
+function newpoints_default_menu(array &$menu_items): array
+{
+    global $mybb;
+
+    if (!empty($mybb->usergroup['newpoints_quick_edit_can_use']) && $mybb->get_input('action') === 'quick_edit') {
+        language_load('quickedit');
+
+        $menu_items[90] = [
+            'action' => 'quick_edit',
+            'lang_string' => 'newpoints_quickedit_newpoints_menu',
+        ];
+    }
+
+    return $menu_items;
+}
+
+function newpoints_terminate(): bool
 {
     global $mybb;
 
@@ -121,11 +126,15 @@ function newpoints_start(): bool
         return false;
     }
 
-    $currentUserID = (int)$mybb->user['uid'];
+    global $newpoints_menu;
 
-    $userID = $mybb->get_input('uid', MYBB::INPUT_INT);
+    $newpointsFile = main_file_name();
 
-    if (!(!empty($mybb->usergroup['cancp']) || (!empty($mybb->usergroup['issupermod']) && $userID === $currentUserID))) {
+    $current_user_id = (int)$mybb->user['uid'];
+
+    $user_id = $mybb->get_input('uid', MYBB::INPUT_INT);
+
+    if (empty($mybb->usergroup['newpoints_quick_edit_can_use'])) {
         error_no_permission();
     }
 
@@ -133,7 +142,7 @@ function newpoints_start(): bool
 
     language_load('quickedit');
 
-    $postID = $mybb->get_input('pid', MYBB::INPUT_INT);
+    $post_id = $mybb->get_input('pid', MYBB::INPUT_INT);
 
     $db_fields = ['uid', 'username', 'newpoints'];
 
@@ -143,37 +152,37 @@ function newpoints_start(): bool
 
     $hook_arguments = run_hooks('quick_edit_start', $hook_arguments);
 
-    if (newpoints_quickedit_shop_is_installed()) {
-        $db_fields[] = 'newpoints_items';
-    }
-
+    /*
     if (newpoints_quickedit_bank_is_installed()) {
         $db_fields[] = 'newpoints_bankoffset';
 
         $db_fields[] = 'newpoints_bankbasetime';
     }
+    */
 
-    $query = $db->simple_select('users', implode(',', $db_fields), "uid='{$userID}'");
+    $query = $db->simple_select('users', implode(',', $db_fields), "uid='{$user_id}'");
 
     if (!$db->num_rows($query)) {
-        error($lang->newpoints_quick_edit_invalid_user);
+        error_no_permission();
     }
 
     $user_data = $db->fetch_array($query);
 
     $hook_arguments['user_data'] = &$user_data;
 
-    $trow = alt_trow();
+    $alternative_background = alt_trow();
 
-    if ($postID) {
-        $redirect_url = get_post_link($postID) . "#pid{$postID}";
+    $hook_arguments['alternative_background'] = &$alternative_background;
+
+    if ($post_id) {
+        $redirect_url = get_post_link($post_id) . "#pid{$post_id}";
     } else {
-        $redirect_url = get_profile_link($userID);
+        $redirect_url = get_profile_link($user_id);
     }
 
     $hook_arguments['redirect_url'] = &$redirect_url;
 
-    $userPoints = (float)$user_data['newpoints'];
+    $user_points = (float)$user_data['newpoints'];
 
     $hook_arguments = run_hooks('quick_edit_intermediate', $hook_arguments);
 
@@ -182,47 +191,13 @@ function newpoints_start(): bool
 
         $hook_arguments = run_hooks('quick_edit_post_start', $hook_arguments);
 
-        $userPointsInput = $mybb->get_input('userPoints', MyBB::INPUT_FLOAT);
+        $user_points_input = $mybb->get_input('userPoints', MyBB::INPUT_FLOAT);
 
-        if (!empty($userPointsInput)) {
-            points_add($userID, $userPointsInput);
+        if (!empty($user_points_input)) {
+            points_add($user_id, $user_points_input);
         }
 
-        if (newpoints_quickedit_shop_is_installed() && !empty($user_data['newpoints_items']) && $mybb->get_input(
-                'items',
-                MyBB::INPUT_ARRAY
-            )) {
-            $user_items = @unserialize($user_data['newpoints_items']);
-
-            foreach ($mybb->get_input('items', MyBB::INPUT_ARRAY) as $item) {
-                if (!($check_item = newpoints_shop_get_item($item))) {
-                    error($lang->quickedit_wrongitem);
-                } elseif (!($check_cat = newpoints_shop_get_item($item))) {
-                    error($lang->quickedit_wrongitemcat);
-                } elseif (!empty($user_items)) {
-                    $key = array_search($check_item['iid'], $user_items);
-
-                    if ($key === false) {
-                        error($lang->quickedit_wrongitem);
-                    } else {
-                        unset($user_items[$key]);
-
-                        if ($mybb->settings['newpoints_quickedit_shop_stock'] == 1) {
-                            $db->update_query(
-                                'newpoints_shop_items',
-                                ['stock' => ((int)$check_item['stock']) + 1],
-                                "iid='{$check_item['iid']}'"
-                            );
-                        }
-                    }
-                }
-            }
-
-            sort($user_items);
-
-            $db->update_query('users', ['newpoints_items' => serialize($user_items)], "uid='{$userID}'");
-        }
-
+        /*
         if (newpoints_quickedit_bank_is_installed() && $mybb->get_input(
                 'my_post_key',
                 MyBB::INPUT_FLOAT
@@ -230,72 +205,42 @@ function newpoints_start(): bool
             $db->update_query(
                 'users',
                 ['newpoints_bankoffset' => $mybb->get_input('my_post_key', MyBB::INPUT_FLOAT)],
-                "uid='{$userID}'"
+                "uid='{$user_id}'"
             );
         }
+        */
 
         $hook_arguments = run_hooks('quick_edit_post_end', $hook_arguments);
 
-        // TODO: We need to log the items that were removed / bank points being edited, right now we don't do so.
-        $log_text = $lang->sprintf(
-            $lang->newpoints_quick_edit_log_item,
-            $user_data['username'],
-            points_format($userPointsInput),
-            points_format($userPoints)
+        log_add(
+            'quickedit',
+            "uid:{$user_id};points:{$user_points_input}",
+            $mybb->user['username'] ?? '',
+            $current_user_id
         );
-
-        newpoints_log('quickedit', $log_text, $mybb->user['username'], $currentUserID);
 
         redirect("{$mybb->settings['bburl']}/{$redirect_url}", $lang->newpoints_quick_edit_redirect_successful);
     }
 
-    $userName = htmlspecialchars_uni($user_data['username'], $userID);
+    $user_name = htmlspecialchars_uni($user_data['username']);
 
-    $userName = build_profile_link($userName, $userID);
+    $user_name = build_profile_link($user_name, $user_id);
 
-    $userPointsFormatted = points_format($userPoints);
+    $user_points_formatted = points_format($user_points);
 
-    $form_title = $lang->sprintf($lang->newpoints_quick_edit_table_title, $userName);
+    $form_title = $lang->sprintf($lang->newpoints_quick_edit_table_title, $user_name);
 
-    $pageUrl = url_handler_build(['action' => 'quick_edit', 'uid' => $currentUserID, 'pid' => $postID]);
+    $page_url = url_handler_build(['action' => 'quick_edit', 'uid' => $current_user_id, 'pid' => $post_id]);
 
-    add_breadcrumb($lang->newpoints_quick_edit_page_nav, $pageUrl);
+    add_breadcrumb($lang->newpoints_quick_edit_page_nav, $page_url);
 
-    $newpoints_shop = '';
+    $additional_rows = '';
 
-    if (newpoints_quickedit_shop_is_installed() && !empty($user_data['newpoints_items'])) {
-        $items = unserialize($user_data['newpoints_items']);
-
-        $shop_items = '';
-
-        if (!empty($items)) {
-            $query = $db->simple_select(
-                'newpoints_shop_items',
-                'iid, name, icon',
-                'visible=1 AND iid IN (' . implode(',', array_unique($items)) . ')',
-                ['order_by' => 'disporder']
-            );
-
-            while ($item = $db->fetch_array($query)) {
-                $item['iid'] = (int)$item['iid'];
-
-                $item['name'] = htmlspecialchars_uni($item['name']);
-
-                $item['icon'] = htmlspecialchars_uni(
-                    (!empty($item['icon']) ? $item['icon'] : 'images/newpoints/default.png')
-                );
-
-                $tabindex = $item['iid'] + 10;
-
-                $shop_items .= eval(newpoints_quickedit_get_template('shop_item'));
-            }
-
-            $newpoints_shop = eval(newpoints_quickedit_get_template('shop'));
-        }
-    }
+    $hook_arguments['additional_rows'] = &$additional_rows;
 
     $newpoints_bank = '';
 
+    /*
     if (newpoints_quickedit_bank_is_installed()) {
         $newpoints_bankoffset = $user_data['newpoints_bankoffset'];
 
@@ -303,6 +248,7 @@ function newpoints_start(): bool
 
         $newpoints_bank = eval(newpoints_quickedit_get_template('bank'));
     }
+    */
 
     $hook_arguments = run_hooks('quick_edit_end', $hook_arguments);
 

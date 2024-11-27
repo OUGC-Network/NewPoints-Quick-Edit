@@ -8,7 +8,7 @@
  *
  *    Website: https://ougc.network
  *
- *    Quickly edit user's points without accessing to the ACP.
+ *    Quickly edit user's Newpoints data from the forums.
  *
  ***************************************************************************
  ****************************************************************************

@@ -8,7 +8,7 @@
  *
  *    Website: https://ougc.network
  *
- *    Quickly edit user's points without accessing to the ACP.
+ *    Quickly edit user's Newpoints data from the forums.
  *
  ***************************************************************************
  ****************************************************************************
@@ -26,25 +26,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-$l['newpoints_quick_edit_page_title'] = 'Edit User';
-$l['newpoints_quick_edit_page_nav'] = 'Edit User';
+$l = [
+    'newpoints_quick_edit' => 'Quick Edit',
 
-$l['newpoints_quick_edit_table_title'] = 'Editing {1}';
-$l['newpoints_quick_edit_table_description'] = 'Here you can edit users Newpoints data.';
-$l['newpoints_quick_edit_table_edit_title'] = 'Edit points';
-$l['newpoints_quick_edit_table_current'] = 'Current points';
+    'newpoints_quickedit_newpoints_menu' => 'Quick Edit',
 
-$l['newpoints_quick_edit_invalid_user'] = 'The user you specified is wrong or invalid.';
+    'newpoints_quick_edit_page_title' => 'Edit User',
+    'newpoints_quick_edit_page_nav' => 'Edit User',
 
-$l['newpoints_quick_edit_log_item'] = 'User: {1} / {2} points / Original Points: {3}';
+    'newpoints_quick_edit_table_title' => 'Editing {1}',
+    'newpoints_quick_edit_table_description' => 'Here you can edit users points data.',
+    'newpoints_quick_edit_table_edit_title' => 'Edit points',
+    'newpoints_quick_edit_table_edit_description' => 'Any amount inserted will be added to the current points. Use a negative sign to subtract points.',
+    'newpoints_quick_edit_table_current' => 'Current points',
 
-$l['newpoints_quick_edit_redirect_successful'] = 'The user Newpoints data was updated successfully.<br/><br/>You will now be redirected to the previous page.';
+    'newpoints_quick_edit_post_bit' => 'Edit points data',
 
-$l['newpoints_quick_edit_post_bit'] = 'Edit points';
-
-$l['newpoints_quick_edit_profile'] = 'Edit points';
-
-$l['newpoints_quick_edit_edit_shop_desc'] = 'Remove items';
-$l['newpoints_quick_edit_edit_bank_desc'] = 'Edit This User Bank Points';
-$l['newpoints_quick_edit_wrong_item'] = 'One or more selected items are invalid.';
-$l['newpoints_quick_edit_wrong_item_category'] = 'One or more selected items are invalid categories.';
+    'newpoints_quick_edit_redirect_successful' => 'The user was updated successfully.<br/><br/>You will now be redirected to the previous page.',
+];

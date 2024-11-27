@@ -8,7 +8,7 @@
  *
  *    Website: https://ougc.network
  *
- *    Quickly edit user's points without accessing to the ACP.
+ *    Quickly edit user's Newpoints data from the forums.
  *
  ***************************************************************************
  ****************************************************************************
@@ -31,14 +31,21 @@ declare(strict_types=1);
 namespace Newpoints\QuickEdit\Admin;
 
 use function Newpoints\Admin\db_verify_columns;
-use function Newpoints\Admin\plugin_library_load;
 use function Newpoints\Core\language_load;
 use function Newpoints\Core\log_remove;
-use function Newpoints\Core\rules_rebuild_cache;
-use function Newpoints\Core\settings_rebuild;
 use function Newpoints\Core\settings_remove;
-use function Newpoints\Core\templates_rebuild;
 use function Newpoints\Core\templates_remove;
+
+const FIELDS_DATA = [
+    'usergroups' => [
+        'newpoints_quick_edit_can_use' => [
+            'type' => 'TINYINT',
+            'unsigned' => true,
+            'default' => 0,
+            'formType' => 'checkBox'
+        ]
+    ]
+];
 
 function plugin_information(): array
 {
@@ -48,7 +55,7 @@ function plugin_information(): array
 
     return [
         'name' => 'Quick Edit',
-        'description' => $lang->quickedit_plugin_d,
+        'description' => $lang->newpoints_quick_edit_desc,
         'website' => 'https://ougc.network',
         'author' => 'Omar G.',
         'authorsite' => 'https://ougc.network',
@@ -66,7 +73,6 @@ function plugin_activation(): bool
 
     $plugin_information = plugin_information();
 
-    // Insert/update version into cache
     $plugins_list = $cache->read('ougc_plugins');
 
     if (!$plugins_list) {
@@ -81,6 +87,8 @@ function plugin_activation(): bool
 
     /*~*~* RUN UPDATES END *~*~*/
 
+    db_verify_columns(FIELDS_DATA);
+
     $plugins_list['newpoints_quick_edit'] = $plugin_information['versioncode'];
 
     $cache->update('ougc_plugins', $plugins_list);
@@ -88,34 +96,54 @@ function plugin_activation(): bool
     return true;
 }
 
-function plugin_deactivation(): bool
-{
-    return true;
-}
-
 function plugin_is_installed(): bool
 {
-    global $mybb;
+    static $isInstalled = null;
 
-    return isset($mybb->settings['newpoints_quickedit_bank_on']);
+    if ($isInstalled === null) {
+        global $db;
+
+        $isInstalledEach = true;
+
+        foreach (FIELDS_DATA as $table_name => $table_columns) {
+            foreach ($table_columns as $field_name => $field_data) {
+                $isInstalledEach = $db->field_exists($field_name, $table_name) && $isInstalledEach;
+            }
+        }
+
+        $isInstalled = $isInstalledEach;
+    }
+
+    return $isInstalled;
 }
 
 function plugin_uninstallation(): bool
 {
-    global $cache;
+    global $db, $cache;
 
     log_remove(['quickedit']);
 
+    foreach (FIELDS_DATA as $table_name => $table_columns) {
+        if ($db->table_exists($table_name)) {
+            foreach ($table_columns as $field_name => $field_data) {
+                if ($db->field_exists($field_name, $table_name)) {
+                    $db->drop_column($table_name, $field_name);
+                }
+            }
+        }
+    }
+
     settings_remove(
         [
-            'on'
+            'shop_on',
+            'shop_stock',
+            'bank_on'
         ],
         'newpoints_quickedit_'
     );
 
     templates_remove(['', 'profile', 'postbit', 'shop', 'shop_item', 'bank'], 'newpoints_quickedit_');
 
-    // Delete version from cache
     $plugins_list = (array)$cache->read('ougc_plugins');
 
     if (isset($plugins_list['newpoints_quick_edit'])) {

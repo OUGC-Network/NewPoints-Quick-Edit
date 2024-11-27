@@ -8,7 +8,7 @@
  *
  *    Website: https://ougc.network
  *
- *    Allows users to bump their own threads without posting on exchange of points.
+ *    Quickly edit user's Newpoints data from the forums.
  *
  ***************************************************************************
  ****************************************************************************
@@ -30,18 +30,36 @@ declare(strict_types=1);
 
 namespace Newpoints\QuickEdit\Hooks\Admin;
 
+use function Newpoints\Core\language_load;
+
+use const Newpoints\QuickEdit\Admin\FIELDS_DATA;
 use const Newpoints\QuickEdit\ROOT;
-
-function newpoints_settings_rebuild_start(array $hook_arguments): array
-{
-    $hook_arguments['settings_directories'][] = ROOT . '/settings';
-
-    return $hook_arguments;
-}
 
 function newpoints_templates_rebuild_start(array $hook_arguments): array
 {
     $hook_arguments['templates_directories']['quickedit'] = ROOT . '/templates';
+
+    return $hook_arguments;
+}
+
+function newpoints_admin_user_groups_edit_graph_start(array &$hook_arguments): array
+{
+    language_load('quickedit');
+
+    $hook_arguments['data_fields'] = array_merge(
+        $hook_arguments['data_fields'],
+        FIELDS_DATA['usergroups']
+    );
+
+    return $hook_arguments;
+}
+
+function newpoints_admin_user_groups_edit_commit_start(array &$hook_arguments): array
+{
+    $hook_arguments['data_fields'] = array_merge(
+        $hook_arguments['data_fields'],
+        FIELDS_DATA['usergroups']
+    );
 
     return $hook_arguments;
 }
