@@ -59,8 +59,8 @@ function plugin_information(): array
         'website' => 'https://ougc.network',
         'author' => 'Omar G.',
         'authorsite' => 'https://ougc.network',
-        'version' => '1.2.0',
-        'versioncode' => 1200,
+        'version' => '3.0.0',
+        'versioncode' => 3000,
         'compatibility' => '3*'
     ];
 }
