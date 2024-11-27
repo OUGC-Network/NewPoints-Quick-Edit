@@ -1,0 +1,57 @@
+<html>
+<head>
+    <title>{$mybb->settings['bbname']} - {$lang->newpoints} {$lang->newpoints_quick_edit_page_title}</title>
+    {$headerinclude}
+</head>
+<body>
+{$header}
+<table width="100%" border="0" align="center">
+    <tr>
+        <td valign="top" width="180">
+            {$newpoints_menu}
+        </td>
+        <td valign="top">
+            <form action="{$mybb->settings['bburl']}/{$newpointsFile}" method="post" name="input">
+                <input type="hidden" name="my_post_key" value="{$mybb->post_code}"/>
+                <input type="hidden" name="action" value="quick_edit"/>
+                <input type="hidden" name="uid" value="{$user_id}"/>
+                <input type="hidden" name="pid" value="{$post_id}"/>
+                <table border="0" cellspacing="{$theme['borderwidth']}" cellpadding="{$theme['tablespace']}"
+                       class="tborder">
+                    <tr>
+                        <td class="thead" colspan="2">
+                            <strong>{$form_title}</strong>
+                            <div class="float_right smalltext">({$lang->newpoints_quick_edit_table_current}:
+                                {$user_points_formatted})
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tcat smalltext" colspan="2">
+                            <strong>{$lang->newpoints_quick_edit_table_description}</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="{$alternative_background}" width="20%">
+                            <strong>{$lang->newpoints_quick_edit_table_edit_title}</strong><br/>
+                            <span class="smalltext">{$lang->newpoints_quick_edit_table_edit_description}</span>
+                        </td>
+                        <td class="{$alternative_background}">
+                            <input type="number" class="textbox" name="userPoints" size="10" step=".01"
+                                   style="min-width: 5em;">
+                        </td>
+                    </tr>
+                    {$additional_rows}
+                    <tr>
+                        <td class="tfoot" colspan="2" align="center">
+                            <input type="submit" class="button" name="submit" value="{$lang->go}" tabindex="4"
+                                   accesskey="s"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </td>
+    </tr>
+</table>
+{$footer}
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 /***************************************************************************
  *
- *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/languages/english/newpoints_quick_edit.lang.php)
+ *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/plugins/ougc/QuickEdit/hooks/admin.php)
  *    Author: Omar Gonzalez
  *    Copyright: © 2012 Omar Gonzalez
  *
@@ -26,21 +26,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-$l = [
-    'newpoints_quick_edit' => 'Quick Edit',
+declare(strict_types=1);
 
-    'newpoints_quickedit_newpoints_menu' => 'Quick Edit',
+namespace Newpoints\QuickEdit\Hooks\Admin;
 
-    'newpoints_quick_edit_page_title' => 'Edit User',
-    'newpoints_quick_edit_page_nav' => 'Edit User',
+use function Newpoints\Core\language_load;
 
-    'newpoints_quick_edit_table_title' => 'Editing {1}',
-    'newpoints_quick_edit_table_description' => 'Here you can edit users points data.',
-    'newpoints_quick_edit_table_edit_title' => 'Edit points',
-    'newpoints_quick_edit_table_edit_description' => 'Any amount inserted will be added to the current points. Use a negative sign to subtract points.',
-    'newpoints_quick_edit_table_current' => 'Current points',
+use const Newpoints\QuickEdit\Admin\FIELDS_DATA;
+use const Newpoints\QuickEdit\ROOT;
 
-    'newpoints_quick_edit_post_bit' => 'Edit points data',
+function newpoints_templates_rebuild_start(array $hook_arguments): array
+{
+    $hook_arguments['templates_directories']['quickedit'] = ROOT . '/templates';
 
-    'newpoints_quick_edit_redirect_successful' => 'The user was updated successfully.<br/><br/>You will now be redirected to the previous page.',
-];
+    return $hook_arguments;
+}
+
+function newpoints_admin_user_groups_edit_graph_start(array &$hook_arguments): array
+{
+    language_load('quickedit');
+
+    $hook_arguments['data_fields'] = array_merge(
+        $hook_arguments['data_fields'],
+        FIELDS_DATA['usergroups']
+    );
+
+    return $hook_arguments;
+}
+
+function newpoints_admin_user_groups_edit_commit_start(array &$hook_arguments): array
+{
+    $hook_arguments['data_fields'] = array_merge(
+        $hook_arguments['data_fields'],
+        FIELDS_DATA['usergroups']
+    );
+
+    return $hook_arguments;
+}

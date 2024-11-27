@@ -27,20 +27,20 @@
  ****************************************************************************/
 
 $l = [
-    'newpoints_quick_edit' => 'Quick Edit',
+    'newpoints_quick_edit' => 'Edicion Rapida',
 
-    'newpoints_quickedit_newpoints_menu' => 'Quick Edit',
+    'newpoints_quickedit_newpoints_menu' => 'Edicion Rapida',
 
-    'newpoints_quick_edit_page_title' => 'Edit User',
-    'newpoints_quick_edit_page_nav' => 'Edit User',
+    'newpoints_quick_edit_page_title' => 'Editar Usiario',
+    'newpoints_quick_edit_page_nav' => 'Editar Usiario',
 
-    'newpoints_quick_edit_table_title' => 'Editing {1}',
-    'newpoints_quick_edit_table_description' => 'Here you can edit users points data.',
-    'newpoints_quick_edit_table_edit_title' => 'Edit points',
-    'newpoints_quick_edit_table_edit_description' => 'Any amount inserted will be added to the current points. Use a negative sign to subtract points.',
-    'newpoints_quick_edit_table_current' => 'Current points',
+    'newpoints_quick_edit_table_title' => 'Editando a {1}',
+    'newpoints_quick_edit_table_description' => 'Aqui puedes editar la informacion de puntos del usuario.',
+    'newpoints_quick_edit_table_edit_title' => 'Editar puntos',
+    'newpoints_quick_edit_table_edit_description' => 'Cualquier cantidad ingresada sera agregada a los puntos actuales. Usa un signo negativo para restar puntos.',
+    'newpoints_quick_edit_table_current' => 'Puntos actuales',
 
-    'newpoints_quick_edit_post_bit' => 'Edit points data',
+    'newpoints_quick_edit_post_bit' => 'Editar datos de puntos',
 
-    'newpoints_quick_edit_redirect_successful' => 'The user was updated successfully.<br/><br/>You will now be redirected to the previous page.',
+    'newpoints_quick_edit_redirect_successful' => 'El usuario fue actualizado exitosamente.<br/><br/>Ahora seras redirigido a la pagina anterior.',
 ];
