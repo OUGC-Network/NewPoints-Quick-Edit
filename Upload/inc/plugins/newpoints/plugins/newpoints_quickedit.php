@@ -40,7 +40,7 @@ use const Newpoints\ROOT_PLUGINS;
 
 defined('IN_MYBB') || die('Direct initialization of this file is not allowed.');
 
-define('Newpoints\QuickEdit\ROOT', ROOT_PLUGINS . '/ougc/QuickEdit');
+define('Newpoints\QuickEdit\ROOT', ROOT_PLUGINS . '/QuickEdit');
 
 if (defined('IN_ADMINCP')) {
     require_once ROOT . '/admin.php';
