@@ -45,6 +45,8 @@ $l = [
 
     'newpoints_quick_edit_redirect_successful' => 'The user was updated successfully.<br/><br/>You will now be redirected to the previous page.',
 
+    'newpoints_quick_edit_wol_location' => '<a href="{1}/{2}">Quick editing</a> a user',
+
     'newpoints_sticky_market_page_logs_primary' => 'Moderator: {1}',
 
     'newpoints_quick_edit_logs_quick_edit_points_add' => 'Quick Points Addition',

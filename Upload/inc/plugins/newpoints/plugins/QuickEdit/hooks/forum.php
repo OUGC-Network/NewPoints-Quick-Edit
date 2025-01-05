@@ -355,3 +355,37 @@ function newpoints_logs_end(): bool
 
     return true;
 }
+
+function fetch_wol_activity_end(array &$hook_parameters): array
+{
+    global $lang;
+
+    if (my_strpos($hook_parameters['location'], main_file_name()) === false ||
+        my_strpos($hook_parameters['location'], 'action=quick_edit') === false) {
+        return $hook_parameters;
+    }
+
+    $hook_parameters['activity'] = 'newpoints_quick_edit';
+
+    return $hook_parameters;
+}
+
+function build_friendly_wol_location_end(array $hook_parameters): array
+{
+    global $mybb, $lang;
+
+    language_load('quickedit');
+
+    switch ($hook_parameters['user_activity']['activity']) {
+        case 'newpoints_quick_edit':
+            $hook_parameters['location_name'] = $lang->sprintf(
+                $lang->newpoints_quick_edit_wol_location,
+                $mybb->settings['bburl'],
+                main_file_name(),
+                url_handler_build(['action' => 'quick_edit'])
+            );
+            break;
+    }
+
+    return $hook_parameters;
+}

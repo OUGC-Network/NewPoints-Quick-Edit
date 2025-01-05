@@ -45,6 +45,9 @@ $l = [
 
     'newpoints_quick_edit_redirect_successful' => 'El usuario fue actualizado exitosamente.<br/><br/>Ahora seras redirigido a la pagina anterior.',
 
+
+    'newpoints_quick_edit_wol_location' => '<a href="{1}/{2}">Editando puntos</a> de usuario',
+
     'newpoints_sticky_market_page_logs_primary' => 'Moderador: {1}',
 
     'newpoints_quick_edit_logs_quick_edit_points_add' => 'Adicion Rapida de Puntos',
