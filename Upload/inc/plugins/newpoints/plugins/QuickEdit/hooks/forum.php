@@ -35,10 +35,15 @@ use MyBB;
 use function Newpoints\Core\language_load;
 use function Newpoints\Core\log_add;
 use function Newpoints\Core\main_file_name;
-use function Newpoints\Core\points_add;
+use function Newpoints\Core\points_add_simple;
 use function Newpoints\Core\points_format;
+use function Newpoints\Core\points_subtract;
 use function Newpoints\Core\run_hooks;
 use function Newpoints\Core\url_handler_build;
+use function Newpoints\QuickEdit\Core\templates_get;
+
+use const Newpoints\Core\LOGGING_TYPE_CHARGE;
+use const Newpoints\Core\LOGGING_TYPE_INCOME;
 
 function newpoints_global_start(array &$hook_arguments): array
 {
@@ -55,7 +60,6 @@ function newpoints_global_start(array &$hook_arguments): array
             ]
         );
     }
-
 
     return $hook_arguments;
 }
@@ -75,7 +79,7 @@ function postbit50(array &$post_data): array
             ['action' => 'quick_edit', 'uid' => (int)$post_data['uid'], 'pid' => (int)$post_data['pid']]
         );
 
-        $post_data['newpoints_quick_edit'] = eval(newpoints_quickedit_get_template('postbit'));
+        $post_data['newpoints_quick_edit'] = eval(templates_get('postbit'));
     }
 
     return $post_data;
@@ -84,19 +88,18 @@ function postbit50(array &$post_data): array
 function member_profile_end(): bool
 {
     global $mybb;
-    global $newpoints_quick_edit;
+    global $memprofile;
 
-    $newpoints_quick_edit = '';
+    $memprofile['newpoints_quick_edit'] = '';
 
     if (!empty($mybb->usergroup['newpoints_quick_edit_can_use'])) {
         global $lang;
-        global $memprofile;
 
         language_load('quickedit');
 
         $page_url = url_handler_build(['action' => 'quick_edit', 'uid' => (int)$memprofile['uid']]);
 
-        $newpoints_quick_edit = eval(newpoints_quickedit_get_template('profile'));
+        $memprofile['newpoints_quick_edit'] = eval(templates_get('profile'));
     }
 
     return true;
@@ -170,7 +173,7 @@ function newpoints_terminate(): bool
 
     $hook_arguments['user_data'] = &$user_data;
 
-    $alternative_background = alt_trow();
+    $alternative_background = alt_trow(true);
 
     $hook_arguments['alternative_background'] = &$alternative_background;
 
@@ -191,10 +194,38 @@ function newpoints_terminate(): bool
 
         $hook_arguments = run_hooks('quick_edit_post_start', $hook_arguments);
 
-        $user_points_input = $mybb->get_input('userPoints', MyBB::INPUT_FLOAT);
+        $input_user_points = $mybb->get_input('user_points', MyBB::INPUT_FLOAT);
 
-        if (!empty($user_points_input)) {
-            points_add($user_id, $user_points_input);
+        if (!empty($input_user_points)) {
+            if ($mybb->get_input('user_points_subtract', MyBB::INPUT_INT) == 1) {
+                points_subtract($user_id, $input_user_points);
+
+                log_add(
+                    'quick_edit_points_subtract',
+                    '',
+                    $user_data['username'] ?? '',
+                    $user_id,
+                    $input_user_points,
+                    $current_user_id,
+                    0,
+                    0,
+                    LOGGING_TYPE_CHARGE
+                );
+            } else {
+                points_add_simple($user_id, $input_user_points);
+
+                log_add(
+                    'quick_edit_points_add',
+                    '',
+                    $user_data['username'] ?? '',
+                    $user_id,
+                    $input_user_points,
+                    $current_user_id,
+                    0,
+                    0,
+                    LOGGING_TYPE_INCOME
+                );
+            }
         }
 
         /*
@@ -212,13 +243,6 @@ function newpoints_terminate(): bool
 
         $hook_arguments = run_hooks('quick_edit_post_end', $hook_arguments);
 
-        log_add(
-            'quickedit',
-            "uid:{$user_id};points:{$user_points_input}",
-            $mybb->user['username'] ?? '',
-            $current_user_id
-        );
-
         redirect("{$mybb->settings['bburl']}/{$redirect_url}", $lang->newpoints_quick_edit_redirect_successful);
     }
 
@@ -234,7 +258,11 @@ function newpoints_terminate(): bool
 
     add_breadcrumb($lang->newpoints_quick_edit_page_nav, $page_url);
 
-    $additional_rows = '';
+    $additional_rows = [
+        eval(templates_get('page_field_edit_points')),
+    ];
+
+    $alternative_background = alt_trow();
 
     $hook_arguments['additional_rows'] = &$additional_rows;
 
@@ -246,15 +274,84 @@ function newpoints_terminate(): bool
 
         $user_data['newpoints_bankoffset'] = points_format((float)$user_data['newpoints_bankoffset']);
 
-        $newpoints_bank = eval(newpoints_quickedit_get_template('bank'));
+        $newpoints_bank = eval(\Newpoints\QuickEdit\Core\templates_get('bank'));
     }
     */
 
     $hook_arguments = run_hooks('quick_edit_end', $hook_arguments);
 
-    $page = eval(newpoints_quickedit_get_template());
+    $additional_rows = implode('', $additional_rows);
+
+    $page = eval(templates_get());
 
     output_page($page);
 
     exit;
+}
+
+function newpoints_logs_log_row(): bool
+{
+    global $log_data;
+
+    if (!in_array($log_data['action'], [
+        'quick_edit_points_add',
+        'quick_edit_points_subtract'
+    ])) {
+        return false;
+    }
+
+    global $lang;
+    global $log_action;
+
+    language_load('quickedit');
+
+    if ($log_data['action'] === 'quick_edit_points_add') {
+        $log_action = $lang->newpoints_quick_edit_logs_quick_edit_points_add;
+    }
+
+    if ($log_data['action'] === 'quick_edit_points_subtract') {
+        $log_action = $lang->newpoints_quick_edit_logs_quick_edit_points_subtract;
+    }
+
+    global $log_primary;
+
+    $moderator_user_data = get_user($log_data['log_primary_id']);
+
+    if (!empty($moderator_user_data['uid'])) {
+        $log_primary = build_profile_link(
+            format_name(
+                htmlspecialchars_uni($moderator_user_data['username']),
+                $moderator_user_data['usergroup'],
+                $moderator_user_data['displaygroup']
+            ),
+            $moderator_user_data['uid']
+        );
+
+        $log_primary = $lang->sprintf(
+            $lang->newpoints_sticky_market_page_logs_primary,
+            $log_primary
+        );
+    }
+
+    return true;
+}
+
+function newpoints_logs_end(): bool
+{
+    global $lang;
+    global $action_types;
+
+    language_load('quickedit');
+
+    foreach ($action_types as $key => &$action_type) {
+        if ($key === 'quick_edit_points_add') {
+            $action_type = $lang->newpoints_quick_edit_logs_quick_edit_points_add;
+        }
+
+        if ($key === 'quick_edit_points_subtract') {
+            $action_type = $lang->newpoints_quick_edit_logs_quick_edit_points_subtract;
+        }
+    }
+
+    return true;
 }

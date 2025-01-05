@@ -2,7 +2,7 @@
 
 /***************************************************************************
  *
- *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/plugins/newpoints_quickedit.php)
+ *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/plugins/ougc/QuickEdit/core.php)
  *    Author: Omar Gonzalez
  *    Copyright: © 2012 Omar Gonzalez
  *
@@ -28,49 +28,38 @@
 
 declare(strict_types=1);
 
-use function Newpoints\QuickEdit\Admin\plugin_activation;
-use function Newpoints\QuickEdit\Admin\plugin_information;
-use function Newpoints\QuickEdit\Admin\plugin_is_installed;
-use function Newpoints\QuickEdit\Admin\plugin_uninstallation;
-use function Newpoints\Core\add_hooks;
+namespace Newpoints\QuickEdit\Core;
 
 use const Newpoints\QuickEdit\ROOT;
-use const Newpoints\ROOT_PLUGINS;
 
-defined('IN_MYBB') || die('Direct initialization of this file is not allowed.');
-
-define('Newpoints\QuickEdit\ROOT', ROOT_PLUGINS . '/QuickEdit');
-
-require_once ROOT . '/core.php';
-
-if (defined('IN_ADMINCP')) {
-    require_once ROOT . '/admin.php';
-
-    require_once ROOT . '/hooks/admin.php';
-
-    add_hooks('Newpoints\QuickEdit\Hooks\Admin');
-} else {
-    require_once ROOT . '/hooks/forum.php';
-
-    add_hooks('Newpoints\QuickEdit\Hooks\Forum');
+function templates_get(string $template_name = '', bool $enable_html_comments = true): string
+{
+    return \Newpoints\Core\templates_get($template_name, $enable_html_comments, ROOT, 'quickedit_');
 }
 
-function newpoints_quickedit_info(): array
-{
-    return plugin_information();
-}
+function build_field_check_box(
+    string &$alternative_background,
+    string $title,
+    string $description,
+    string $label,
+    int $value,
+    bool $is_checked,
+    string $name,
+    string $id = ''
+): string {
+    if (empty($id)) {
+        $id = $name;
+    }
 
-function newpoints_quickedit_activate(): bool
-{
-    return plugin_activation();
-}
+    $checked_element = '';
 
-function newpoints_quickedit_uninstall(): bool
-{
-    return plugin_uninstallation();
-}
+    if ($is_checked) {
+        $checked_element = 'checked="checked"';
+    }
 
-function newpoints_quickedit_is_installed(): bool
-{
-    return plugin_is_installed();
+    $field_code = eval(templates_get('page_field_check_box'));
+
+    $alternative_background = alt_trow();
+
+    return $field_code;
 }

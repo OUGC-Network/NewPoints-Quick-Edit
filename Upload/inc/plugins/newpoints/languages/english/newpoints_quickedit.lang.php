@@ -36,11 +36,17 @@ $l = [
 
     'newpoints_quick_edit_table_title' => 'Editing {1}',
     'newpoints_quick_edit_table_description' => 'Here you can edit users points data.',
-    'newpoints_quick_edit_table_edit_title' => 'Edit points',
-    'newpoints_quick_edit_table_edit_description' => 'Any amount inserted will be added to the current points. Use a negative sign to subtract points.',
+    'newpoints_quick_edit_table_edit_points' => 'Edit points',
+    'newpoints_quick_edit_table_edit_points_description' => 'Any amount inserted will be added to the current points.',
+    'newpoints_quick_edit_table_edit_points_subtract_label' => 'Subtract points from the user instead.',
     'newpoints_quick_edit_table_current' => 'Current points',
 
     'newpoints_quick_edit_post_bit' => 'Edit points data',
 
     'newpoints_quick_edit_redirect_successful' => 'The user was updated successfully.<br/><br/>You will now be redirected to the previous page.',
+
+    'newpoints_sticky_market_page_logs_primary' => 'Moderator: {1}',
+
+    'newpoints_quick_edit_logs_quick_edit_points_add' => 'Quick Points Addition',
+    'newpoints_quick_edit_logs_quick_edit_points_subtract' => 'Quick Points Subtraction',
 ];
