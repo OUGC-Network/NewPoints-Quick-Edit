@@ -77,7 +77,7 @@ function plugin_activation(): bool
     global $db;
 
     if ($db->field_exists('newpoints_quick_edit_can_use', 'usergroups')) {
-        $db->drop_column('newpoints_quick_edit_can_use', 'usergroups');
+        $db->drop_column('usergroups', 'newpoints_quick_edit_can_use');
     }
 
     /*~*~* RUN UPDATES END *~*~*/
