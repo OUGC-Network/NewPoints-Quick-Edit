@@ -2,13 +2,13 @@
 
 /***************************************************************************
  *
- *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/languages/english/admin/newpoints_quickedit.lang.php)
+ *    NewPoints Quick Edit plugin (/inc/plugins/newpoints/languages/english/admin/newpoints_quickedit.lang.php)
  *    Author: Omar Gonzalez
  *    Copyright: © 2012 Omar Gonzalez
  *
  *    Website: https://ougc.network
  *
- *    Quickly edit user's Newpoints data from the forums.
+ *    Quickly edit user's NewPoints data from the forums.
  *
  ***************************************************************************
  ****************************************************************************
@@ -28,7 +28,7 @@
 
 $l = [
     'newpoints_quick_edit' => 'Quick Edit',
-    'newpoints_quick_edit_desc' => "Quickly edit user's Newpoints data from the forums.",
+    'newpoints_quick_edit_desc' => "Quickly edit user's NewPoints data from the forums.",
 
     'setting_group_newpoints_quick_edit' => 'Quick Edit',
     'setting_group_newpoints_quick_edit_desc' => 'Settings for the Quick Edit feature.',
@@ -38,5 +38,5 @@ $l = [
     'setting_newpoints_quick_edit_manage_groups' => 'Manage Groups',
     'setting_newpoints_quick_edit_manage_groups_desc' => 'Select the groups that can manage the signature market.',
     'setting_newpoints_quick_edit_menu_order' => 'Menu Order',
-    'setting_newpoints_quick_edit_menu_order_desc' => 'Order in the Newpoints menu item.',
+    'setting_newpoints_quick_edit_menu_order_desc' => 'Order in the NewPoints menu item.',
 ];

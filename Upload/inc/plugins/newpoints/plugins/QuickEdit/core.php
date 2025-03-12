@@ -2,13 +2,13 @@
 
 /***************************************************************************
  *
- *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/plugins/ougc/QuickEdit/core.php)
+ *    NewPoints Quick Edit plugin (/inc/plugins/newpoints/plugins/ougc/QuickEdit/core.php)
  *    Author: Omar Gonzalez
  *    Copyright: © 2012 Omar Gonzalez
  *
  *    Website: https://ougc.network
  *
- *    Quickly edit user's Newpoints data from the forums.
+ *    Quickly edit user's NewPoints data from the forums.
  *
  ***************************************************************************
  ****************************************************************************
@@ -28,13 +28,13 @@
 
 declare(strict_types=1);
 
-namespace Newpoints\QuickEdit\Core;
+namespace NewPoints\QuickEdit\Core;
 
-use const Newpoints\QuickEdit\ROOT;
+use const NewPoints\QuickEdit\ROOT;
 
 function templates_get(string $template_name = '', bool $enable_html_comments = true): string
 {
-    return \Newpoints\Core\templates_get($template_name, $enable_html_comments, ROOT, 'quickedit_');
+    return \NewPoints\Core\templates_get($template_name, $enable_html_comments, ROOT, 'quickedit_');
 }
 
 function build_field_check_box(

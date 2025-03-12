@@ -2,13 +2,13 @@
 
 /***************************************************************************
  *
- *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/plugins/ougc/QuickEdit/hooks/forum.php)
+ *    NewPoints Quick Edit plugin (/inc/plugins/newpoints/plugins/ougc/QuickEdit/hooks/forum.php)
  *    Author: Omar Gonzalez
  *    Copyright: © 2012 Omar Gonzalez
  *
  *    Website: https://ougc.network
  *
- *    Quickly edit user's Newpoints data from the forums.
+ *    Quickly edit user's NewPoints data from the forums.
  *
  ***************************************************************************
  ****************************************************************************
@@ -28,23 +28,23 @@
 
 declare(strict_types=1);
 
-namespace Newpoints\QuickEdit\Hooks\Forum;
+namespace NewPoints\QuickEdit\Hooks\Forum;
 
 use MyBB;
 
-use function Newpoints\Core\get_setting;
-use function Newpoints\Core\language_load;
-use function Newpoints\Core\log_add;
-use function Newpoints\Core\main_file_name;
-use function Newpoints\Core\points_add_simple;
-use function Newpoints\Core\points_format;
-use function Newpoints\Core\points_subtract;
-use function Newpoints\Core\run_hooks;
-use function Newpoints\Core\url_handler_build;
-use function Newpoints\QuickEdit\Core\templates_get;
+use function NewPoints\Core\get_setting;
+use function NewPoints\Core\language_load;
+use function NewPoints\Core\log_add;
+use function NewPoints\Core\main_file_name;
+use function NewPoints\Core\points_add_simple;
+use function NewPoints\Core\points_format;
+use function NewPoints\Core\points_subtract;
+use function NewPoints\Core\run_hooks;
+use function NewPoints\Core\url_handler_build;
+use function NewPoints\QuickEdit\Core\templates_get;
 
-use const Newpoints\Core\LOGGING_TYPE_CHARGE;
-use const Newpoints\Core\LOGGING_TYPE_INCOME;
+use const NewPoints\Core\LOGGING_TYPE_CHARGE;
+use const NewPoints\Core\LOGGING_TYPE_INCOME;
 
 function newpoints_global_start(array &$hook_arguments): array
 {
@@ -116,7 +116,7 @@ function newpoints_default_menu(array &$menu_items): array
 {
     global $mybb;
 
-    if (!is_member(get_setting('quick_edit_manage_groups')) &&
+    if (is_member(get_setting('quick_edit_manage_groups')) &&
         $mybb->get_input('action') === get_setting('quick_edit_action_name')) {
         language_load('quickedit');
 
@@ -291,7 +291,7 @@ function newpoints_terminate(): bool
 
         $user_data['newpoints_bankoffset'] = points_format((float)$user_data['newpoints_bankoffset']);
 
-        $newpoints_bank = eval(\Newpoints\QuickEdit\Core\templates_get('bank'));
+        $newpoints_bank = eval(\NewPoints\QuickEdit\Core\templates_get('bank'));
     }
     */
 

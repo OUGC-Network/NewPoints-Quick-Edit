@@ -2,13 +2,13 @@
 
 /***************************************************************************
  *
- *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/languages/english/newpoints_quick_edit.lang.php)
+ *    NewPoints Quick Edit plugin (/inc/plugins/newpoints/languages/english/newpoints_quick_edit.lang.php)
  *    Author: Omar Gonzalez
  *    Copyright: © 2012 Omar Gonzalez
  *
  *    Website: https://ougc.network
  *
- *    Quickly edit user's Newpoints data from the forums.
+ *    Quickly edit user's NewPoints data from the forums.
  *
  ***************************************************************************
  ****************************************************************************

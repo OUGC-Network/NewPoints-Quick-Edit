@@ -2,13 +2,13 @@
 
 /***************************************************************************
  *
- *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/plugins/ougc/QuickEdit/admin.php)
+ *    NewPoints Quick Edit plugin (/inc/plugins/newpoints/plugins/ougc/QuickEdit/admin.php)
  *    Author: Omar Gonzalez
  *    Copyright: © 2012 Omar Gonzalez
  *
  *    Website: https://ougc.network
  *
- *    Quickly edit user's Newpoints data from the forums.
+ *    Quickly edit user's NewPoints data from the forums.
  *
  ***************************************************************************
  ****************************************************************************
@@ -28,13 +28,13 @@
 
 declare(strict_types=1);
 
-namespace Newpoints\QuickEdit\Admin;
+namespace NewPoints\QuickEdit\Admin;
 
-use function Newpoints\Admin\db_verify_columns;
-use function Newpoints\Core\language_load;
-use function Newpoints\Core\log_remove;
-use function Newpoints\Core\settings_remove;
-use function Newpoints\Core\templates_remove;
+use function NewPoints\Admin\db_verify_columns;
+use function NewPoints\Core\language_load;
+use function NewPoints\Core\log_remove;
+use function NewPoints\Core\settings_remove;
+use function NewPoints\Core\templates_remove;
 
 function plugin_information(): array
 {

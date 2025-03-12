@@ -2,13 +2,13 @@
 
 /***************************************************************************
  *
- *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/plugins/ougc/QuickEdit/hooks/admin.php)
+ *    NewPoints Quick Edit plugin (/inc/plugins/newpoints/plugins/ougc/QuickEdit/hooks/admin.php)
  *    Author: Omar Gonzalez
  *    Copyright: © 2012 Omar Gonzalez
  *
  *    Website: https://ougc.network
  *
- *    Quickly edit user's Newpoints data from the forums.
+ *    Quickly edit user's NewPoints data from the forums.
  *
  ***************************************************************************
  ****************************************************************************
@@ -28,11 +28,11 @@
 
 declare(strict_types=1);
 
-namespace Newpoints\QuickEdit\Hooks\Admin;
+namespace NewPoints\QuickEdit\Hooks\Admin;
 
-use function Newpoints\Core\language_load;
+use function NewPoints\Core\language_load;
 
-use const Newpoints\QuickEdit\ROOT;
+use const NewPoints\QuickEdit\ROOT;
 
 function newpoints_settings_rebuild_start(array &$hook_arguments): array
 {
