@@ -37,4 +37,6 @@ $l = [
     'setting_newpoints_quick_edit_action_name_desc' => 'Select the action input name to use for this feature.',
     'setting_newpoints_quick_edit_manage_groups' => 'Manage Groups',
     'setting_newpoints_quick_edit_manage_groups_desc' => 'Select the groups that can manage the signature market.',
+    'setting_newpoints_quick_edit_menu_order' => 'Menu Order',
+    'setting_newpoints_quick_edit_menu_order_desc' => 'Order in the Newpoints menu item.',
 ];

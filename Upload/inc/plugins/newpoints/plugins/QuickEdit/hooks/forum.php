@@ -120,7 +120,7 @@ function newpoints_default_menu(array &$menu_items): array
         $mybb->get_input('action') === get_setting('quick_edit_action_name')) {
         language_load('quickedit');
 
-        $menu_items[] = [
+        $menu_items[get_setting('quick_edit_menu_order')] = [
             'action' => get_setting('quick_edit_action_name'),
             'lang_string' => 'newpoints_quickedit_newpoints_menu',
             'category' => 'user'
