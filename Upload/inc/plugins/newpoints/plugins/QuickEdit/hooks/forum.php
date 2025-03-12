@@ -32,6 +32,7 @@ namespace Newpoints\QuickEdit\Hooks\Forum;
 
 use MyBB;
 
+use function Newpoints\Core\get_setting;
 use function Newpoints\Core\language_load;
 use function Newpoints\Core\log_add;
 use function Newpoints\Core\main_file_name;
@@ -76,7 +77,11 @@ function postbit50(array &$post_data): array
         language_load('quickedit');
 
         $page_url = url_handler_build(
-            ['action' => 'quick_edit', 'uid' => (int)$post_data['uid'], 'pid' => (int)$post_data['pid']]
+            [
+                'action' => get_setting('quick_edit_action_name'),
+                'uid' => (int)$post_data['uid'],
+                'pid' => (int)$post_data['pid']
+            ]
         );
 
         $post_data['newpoints_quick_edit'] = eval(templates_get('postbit'));
@@ -97,7 +102,9 @@ function member_profile_end(): bool
 
         language_load('quickedit');
 
-        $page_url = url_handler_build(['action' => 'quick_edit', 'uid' => (int)$memprofile['uid']]);
+        $page_url = url_handler_build(
+            ['action' => get_setting('quick_edit_action_name'), 'uid' => (int)$memprofile['uid']]
+        );
 
         $memprofile['newpoints_quick_edit'] = eval(templates_get('profile'));
     }
@@ -109,11 +116,12 @@ function newpoints_default_menu(array &$menu_items): array
 {
     global $mybb;
 
-    if (!empty($mybb->usergroup['newpoints_quick_edit_can_use']) && $mybb->get_input('action') === 'quick_edit') {
+    if (!empty($mybb->usergroup['newpoints_quick_edit_can_use']) &&
+        $mybb->get_input('action') === get_setting('quick_edit_action_name')) {
         language_load('quickedit');
 
         $menu_items[90] = [
-            'action' => 'quick_edit',
+            'action' => get_setting('quick_edit_action_name'),
             'lang_string' => 'newpoints_quickedit_newpoints_menu',
             'category' => 'user'
         ];
@@ -126,9 +134,13 @@ function newpoints_terminate(): bool
 {
     global $mybb;
 
-    if ($mybb->get_input('action') !== 'quick_edit') {
+    if ($mybb->get_input('action') !== get_setting('quick_edit_action_name')) {
         return false;
     }
+
+    global $action_name;
+
+    $action_name = get_setting('quick_edit_action_name');
 
     global $newpoints_menu;
 
@@ -184,7 +196,7 @@ function newpoints_terminate(): bool
         $redirect_url = get_profile_link($user_id);
     }
 
-    //$redirect_url = url_handler_build(['action' => 'quick_edit', 'uid' => $user_id, 'pid' => $post_id]);
+    //$redirect_url = url_handler_build(['action' => $action_name, 'uid' => $user_id, 'pid' => $post_id]);
 
     $hook_arguments['redirect_url'] = &$redirect_url;
 
@@ -257,7 +269,9 @@ function newpoints_terminate(): bool
 
     $form_title = $lang->sprintf($lang->newpoints_quick_edit_table_title, $user_name);
 
-    $page_url = url_handler_build(['action' => 'quick_edit', 'uid' => $user_id, 'pid' => $post_id]);
+    $page_url = url_handler_build(
+        ['action' => $action_name, 'uid' => $user_id, 'pid' => $post_id]
+    );
 
     add_breadcrumb($lang->newpoints_quick_edit_page_nav, $page_url);
 
@@ -364,7 +378,7 @@ function fetch_wol_activity_end(array &$hook_parameters): array
     global $lang;
 
     if (my_strpos($hook_parameters['location'], main_file_name()) === false ||
-        my_strpos($hook_parameters['location'], 'action=quick_edit') === false) {
+        my_strpos($hook_parameters['location'], 'action=' . get_setting('quick_edit_action_name')) === false) {
         return $hook_parameters;
     }
 
@@ -385,7 +399,7 @@ function build_friendly_wol_location_end(array $hook_parameters): array
                 $lang->newpoints_quick_edit_wol_location,
                 $mybb->settings['bburl'],
                 main_file_name(),
-                url_handler_build(['action' => 'quick_edit'])
+                url_handler_build(['action' => get_setting('quick_edit_action_name')])
             );
             break;
     }

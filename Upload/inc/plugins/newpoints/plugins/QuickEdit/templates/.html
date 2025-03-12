@@ -13,7 +13,7 @@
         <td valign="top">
             <form action="{$mybb->settings['bburl']}/{$newpointsFile}" method="post" name="input">
                 <input type="hidden" name="my_post_key" value="{$mybb->post_code}"/>
-                <input type="hidden" name="action" value="quick_edit"/>
+                <input type="hidden" name="action" value="{$action_name}"/>
                 <input type="hidden" name="uid" value="{$user_id}"/>
                 <input type="hidden" name="pid" value="{$post_id}"/>
                 <table border="0" cellspacing="{$theme['borderwidth']}" cellpadding="{$theme['tablespace']}"

@@ -43,7 +43,7 @@ $l = [
 
     'newpoints_quick_edit_post_bit' => 'Edit points data',
 
-    'newpoints_quick_edit_redirect_successful' => 'The user was updated successfully.<br/><br/>You will now be redirected to the previous page.',
+    'newpoints_quick_edit_redirect_successful' => 'The user was updated successfully.<br/>You will now be redirected to the previous page.',
 
     'newpoints_quick_edit_wol_location' => '<a href="{1}/{2}">Quick editing</a> a user',
 
