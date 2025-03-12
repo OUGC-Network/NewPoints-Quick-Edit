@@ -45,6 +45,7 @@ use function NewPoints\QuickEdit\Core\templates_get;
 
 use const NewPoints\Core\LOGGING_TYPE_CHARGE;
 use const NewPoints\Core\LOGGING_TYPE_INCOME;
+use const Newpoints\DECIMAL_DATA_TYPE_STEP;
 
 function newpoints_global_start(array &$hook_arguments): array
 {
@@ -274,6 +275,8 @@ function newpoints_terminate(): bool
     );
 
     add_breadcrumb($lang->newpoints_quick_edit_page_nav, $page_url);
+
+    $step = DECIMAL_DATA_TYPE_STEP;
 
     $additional_rows = [
         eval(templates_get('page_field_edit_points')),
