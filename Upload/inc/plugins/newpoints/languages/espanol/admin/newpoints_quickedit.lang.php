@@ -30,11 +30,11 @@ $l = [
     'newpoints_quick_edit' => 'Quick Edit',
     'newpoints_quick_edit_desc' => "Quickly edit user's Newpoints data from the forums.",
 
-    'newpoints_user_groups_quick_edit_can_use' => 'Can quick edit users?',
-
     'setting_group_newpoints_quick_edit' => 'Quick Edit',
     'setting_group_newpoints_quick_edit_desc' => 'Settings for the Quick Edit feature.',
 
     'setting_newpoints_quick_edit_action_name' => 'Action Page Name',
     'setting_newpoints_quick_edit_action_name_desc' => 'Select the action input name to use for this feature.',
+    'setting_newpoints_quick_edit_manage_groups' => 'Manage Groups',
+    'setting_newpoints_quick_edit_manage_groups_desc' => 'Select the groups that can manage the signature market.',
 ];

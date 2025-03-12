@@ -71,7 +71,7 @@ function postbit50(array &$post_data): array
 
     $post_data['newpoints_quick_edit'] = '';
 
-    if (!empty($mybb->usergroup['newpoints_quick_edit_can_use'])) {
+    if (!is_member(get_setting('quick_edit_manage_groups'))) {
         global $lang;
 
         language_load('quickedit');
@@ -97,7 +97,7 @@ function member_profile_end(): bool
 
     $memprofile['newpoints_quick_edit'] = '';
 
-    if (!empty($mybb->usergroup['newpoints_quick_edit_can_use'])) {
+    if (!is_member(get_setting('quick_edit_manage_groups'))) {
         global $lang;
 
         language_load('quickedit');
@@ -116,11 +116,11 @@ function newpoints_default_menu(array &$menu_items): array
 {
     global $mybb;
 
-    if (!empty($mybb->usergroup['newpoints_quick_edit_can_use']) &&
+    if (!is_member(get_setting('quick_edit_manage_groups')) &&
         $mybb->get_input('action') === get_setting('quick_edit_action_name')) {
         language_load('quickedit');
 
-        $menu_items[90] = [
+        $menu_items[] = [
             'action' => get_setting('quick_edit_action_name'),
             'lang_string' => 'newpoints_quickedit_newpoints_menu',
             'category' => 'user'
@@ -150,7 +150,7 @@ function newpoints_terminate(): bool
 
     $user_id = $mybb->get_input('uid', MYBB::INPUT_INT);
 
-    if (empty($mybb->usergroup['newpoints_quick_edit_can_use'])) {
+    if (!is_member(get_setting('quick_edit_manage_groups'))) {
         error_no_permission();
     }
 

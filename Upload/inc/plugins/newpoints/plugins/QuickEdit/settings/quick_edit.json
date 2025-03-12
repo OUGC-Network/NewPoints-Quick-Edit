@@ -2,5 +2,9 @@
   "action_name": {
     "type": "text",
     "value": "quick_edit"
+  },
+  "manage_groups": {
+    "type": "groupselect",
+    "value": 4
   }
 }
