@@ -50,7 +50,8 @@ function plugin_information(): array
         'authorsite' => 'https://ougc.network',
         'version' => '3.0.0',
         'versioncode' => 3000,
-        'compatibility' => '3*'
+        'compatibility' => '31*',
+        'codename' => 'newpoints_quick_edit'
     ];
 }
 
