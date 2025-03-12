@@ -2,13 +2,13 @@
 
 /***************************************************************************
  *
- *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/plugins/ougc/QuickEdit/hooks/admin.php)
+ *    NewPoints Quick Edit plugin (/inc/plugins/newpoints/plugins/ougc/QuickEdit/core.php)
  *    Author: Omar Gonzalez
  *    Copyright: © 2012 Omar Gonzalez
  *
  *    Website: https://ougc.network
  *
- *    Quickly edit user's Newpoints data from the forums.
+ *    Quickly edit user's NewPoints data from the forums.
  *
  ***************************************************************************
  ****************************************************************************
@@ -28,38 +28,38 @@
 
 declare(strict_types=1);
 
-namespace Newpoints\QuickEdit\Hooks\Admin;
+namespace NewPoints\QuickEdit\Core;
 
-use function Newpoints\Core\language_load;
+use const NewPoints\QuickEdit\ROOT;
 
-use const Newpoints\QuickEdit\Admin\FIELDS_DATA;
-use const Newpoints\QuickEdit\ROOT;
-
-function newpoints_templates_rebuild_start(array $hook_arguments): array
+function templates_get(string $template_name = '', bool $enable_html_comments = true): string
 {
-    $hook_arguments['templates_directories']['quickedit'] = ROOT . '/templates';
-
-    return $hook_arguments;
+    return \NewPoints\Core\templates_get($template_name, $enable_html_comments, ROOT, 'quickedit_');
 }
 
-function newpoints_admin_user_groups_edit_graph_start(array &$hook_arguments): array
-{
-    language_load('quickedit');
+function build_field_check_box(
+    string &$alternative_background,
+    string $title,
+    string $description,
+    string $label,
+    int $value,
+    bool $is_checked,
+    string $name,
+    string $id = ''
+): string {
+    if (empty($id)) {
+        $id = $name;
+    }
 
-    $hook_arguments['data_fields'] = array_merge(
-        $hook_arguments['data_fields'],
-        FIELDS_DATA['usergroups']
-    );
+    $checked_element = '';
 
-    return $hook_arguments;
-}
+    if ($is_checked) {
+        $checked_element = 'checked="checked"';
+    }
 
-function newpoints_admin_user_groups_edit_commit_start(array &$hook_arguments): array
-{
-    $hook_arguments['data_fields'] = array_merge(
-        $hook_arguments['data_fields'],
-        FIELDS_DATA['usergroups']
-    );
+    $field_code = eval(templates_get('page_field_check_box'));
 
-    return $hook_arguments;
+    $alternative_background = alt_trow();
+
+    return $field_code;
 }

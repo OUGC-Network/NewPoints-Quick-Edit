@@ -1,17 +1,17 @@
-<h3 align="center">Newpoints Quick Edit</h3>
+<h3 align="center">NewPoints Quick Edit</h3>
 
 <div align="center">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/OUGC-Network/Newpoints--Quick-Edit.svg)](./issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/OUGC-OUGC-Network/Newpoints--Quick-Edit.svg)](./pulls)
+[![GitHub Issues](https://img.shields.io/github/issues/OUGC-Network/NewPoints--Quick-Edit.svg)](./issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/OUGC-OUGC-Network/NewPoints--Quick-Edit.svg)](./pulls)
 [![License](https://img.shields.io/badge/license-GPL-blue)](/LICENSE)
 
 </div>
 
 ---
 
-<p align="center"> Quickly edit user's Newpoints data from the forums.
+<p align="center"> Quickly edit user's NewPoints data from the forums.
     <br> 
 </p>
 
@@ -35,7 +35,7 @@
 
 ## 🚀 About <a name = "about"></a>
 
-Quickly edit user's Newpoints data from the forums.
+Quickly edit user's NewPoints data from the forums.
 
 [Go up to Table of Contents](#table_of_contents)
 
@@ -49,7 +49,7 @@ A setup that meets the following requirements is necessary to use this plugin.
 
 - [MyBB](https://mybb.com/) >= 1.8
 - PHP >= 7
-- [Newpoints](https://github.com/OUGC-Network/Newpoints) >= 3
+- [NewPoints](https://github.com/OUGC-Network/NewPoints) >= 3
 
 ### File structure <a name = "file_structure"></a>
 
@@ -97,15 +97,15 @@ Follow the next steps in order to update your copy of this plugin.
 1. Browse to _Configuration » Plugins_ and deactivate this plugin by clicking _Deactivate_.
 2. Follow step 1 and 2 from the [Install](#install) section.
 3. Browse to _Configuration » Plugins_ and activate this plugin by clicking _Activate_.
-4. Browse to _NewPoints_ to manage Newpoints modules.
+4. Browse to _NewPoints_ to manage NewPoints modules.
 
 ### Template Modifications <a name = "template_modifications"></a>
 
 It is required that you edit the following template for each of your themes.
 
-1. Place `{$post_data['newpoints_quick_edit']}` in the `postbit` or `postbit_classic` templates to display a quick edit
+1. Place `{$post['newpoints_quick_edit']}` in the `postbit` or `postbit_classic` templates to display a quick edit
    link in posts.
-2. Place `{$newpoints_quick_edit}` in the `member_profile` template to display a quick edit
+2. Place `{$memprofile['newpoints_quick_edit']}` in the `member_profile` template to display a quick edit
    link in profiles.
 
 [Go up to Table of Contents](#table_of_contents)
@@ -147,7 +147,7 @@ Two new settings are added to forums.
 
 - [@Omar G](https://github.com/Sama34) - Idea & Initial work
 
-See also the list of [contributors](https://github.com/OUGC-Network/Newpoints--Quick-Edit/contributors) who
+See also the list of [contributors](https://github.com/OUGC-Network/NewPoints--Quick-Edit/contributors) who
 participated in
 this
 project.

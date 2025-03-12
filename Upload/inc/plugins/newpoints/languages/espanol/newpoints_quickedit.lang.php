@@ -2,13 +2,13 @@
 
 /***************************************************************************
  *
- *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/languages/english/newpoints_quick_edit.lang.php)
+ *    NewPoints Quick Edit plugin (/inc/plugins/newpoints/languages/english/newpoints_quick_edit.lang.php)
  *    Author: Omar Gonzalez
  *    Copyright: © 2012 Omar Gonzalez
  *
  *    Website: https://ougc.network
  *
- *    Quickly edit user's Newpoints data from the forums.
+ *    Quickly edit user's NewPoints data from the forums.
  *
  ***************************************************************************
  ****************************************************************************
@@ -36,11 +36,20 @@ $l = [
 
     'newpoints_quick_edit_table_title' => 'Editando a {1}',
     'newpoints_quick_edit_table_description' => 'Aqui puedes editar la informacion de puntos del usuario.',
-    'newpoints_quick_edit_table_edit_title' => 'Editar puntos',
-    'newpoints_quick_edit_table_edit_description' => 'Cualquier cantidad ingresada sera agregada a los puntos actuales. Usa un signo negativo para restar puntos.',
+    'newpoints_quick_edit_table_edit_points' => 'Editar puntos',
+    'newpoints_quick_edit_table_edit_points_description' => 'Cualquier cantidad ingresada sera agregada a los puntos actuales.',
+    'newpoints_quick_edit_table_edit_points_subtract_label' => 'Sustraer puntos del usuario.',
     'newpoints_quick_edit_table_current' => 'Puntos actuales',
 
     'newpoints_quick_edit_post_bit' => 'Editar datos de puntos',
 
     'newpoints_quick_edit_redirect_successful' => 'El usuario fue actualizado exitosamente.<br/><br/>Ahora seras redirigido a la pagina anterior.',
+
+
+    'newpoints_quick_edit_wol_location' => '<a href="{1}/{2}">Editando puntos</a> de usuario',
+
+    'newpoints_sticky_market_page_logs_primary' => 'Moderador: {1}',
+
+    'newpoints_quick_edit_logs_quick_edit_points_add' => 'Adicion Rapida de Puntos',
+    'newpoints_quick_edit_logs_quick_edit_points_subtract' => 'Sustraccion Rapida de Puntos',
 ];

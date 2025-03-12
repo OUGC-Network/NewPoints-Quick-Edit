@@ -2,13 +2,13 @@
 
 /***************************************************************************
  *
- *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/plugins/ougc/QuickEdit/admin.php)
+ *    NewPoints Quick Edit plugin (/inc/plugins/newpoints/plugins/ougc/QuickEdit/admin.php)
  *    Author: Omar Gonzalez
  *    Copyright: © 2012 Omar Gonzalez
  *
  *    Website: https://ougc.network
  *
- *    Quickly edit user's Newpoints data from the forums.
+ *    Quickly edit user's NewPoints data from the forums.
  *
  ***************************************************************************
  ****************************************************************************
@@ -28,24 +28,13 @@
 
 declare(strict_types=1);
 
-namespace Newpoints\QuickEdit\Admin;
+namespace NewPoints\QuickEdit\Admin;
 
-use function Newpoints\Admin\db_verify_columns;
-use function Newpoints\Core\language_load;
-use function Newpoints\Core\log_remove;
-use function Newpoints\Core\settings_remove;
-use function Newpoints\Core\templates_remove;
-
-const FIELDS_DATA = [
-    'usergroups' => [
-        'newpoints_quick_edit_can_use' => [
-            'type' => 'TINYINT',
-            'unsigned' => true,
-            'default' => 0,
-            'formType' => 'checkBox'
-        ]
-    ]
-];
+use function NewPoints\Admin\db_verify_columns;
+use function NewPoints\Core\language_load;
+use function NewPoints\Core\log_remove;
+use function NewPoints\Core\settings_remove;
+use function NewPoints\Core\templates_remove;
 
 function plugin_information(): array
 {
@@ -61,7 +50,8 @@ function plugin_information(): array
         'authorsite' => 'https://ougc.network',
         'version' => '3.0.0',
         'versioncode' => 3000,
-        'compatibility' => '3*'
+        'compatibility' => '31*',
+        'codename' => 'newpoints_quick_edit'
     ];
 }
 
@@ -85,9 +75,13 @@ function plugin_activation(): bool
 
     /*~*~* RUN UPDATES START *~*~*/
 
-    /*~*~* RUN UPDATES END *~*~*/
+    global $db;
 
-    db_verify_columns(FIELDS_DATA);
+    if ($db->field_exists('newpoints_quick_edit_can_use', 'usergroups')) {
+        $db->drop_column('usergroups', 'newpoints_quick_edit_can_use');
+    }
+
+    /*~*~* RUN UPDATES END *~*~*/
 
     $plugins_list['newpoints_quick_edit'] = $plugin_information['versioncode'];
 
@@ -98,40 +92,18 @@ function plugin_activation(): bool
 
 function plugin_is_installed(): bool
 {
-    static $isInstalled = null;
+    global $cache;
 
-    if ($isInstalled === null) {
-        global $db;
+    $plugins_list = (array)$cache->read('ougc_plugins');
 
-        $isInstalledEach = true;
-
-        foreach (FIELDS_DATA as $table_name => $table_columns) {
-            foreach ($table_columns as $field_name => $field_data) {
-                $isInstalledEach = $db->field_exists($field_name, $table_name) && $isInstalledEach;
-            }
-        }
-
-        $isInstalled = $isInstalledEach;
-    }
-
-    return $isInstalled;
+    return isset($plugins_list['newpoints_quick_edit']);
 }
 
 function plugin_uninstallation(): bool
 {
-    global $db, $cache;
+    global $cache;
 
     log_remove(['quickedit']);
-
-    foreach (FIELDS_DATA as $table_name => $table_columns) {
-        if ($db->table_exists($table_name)) {
-            foreach ($table_columns as $field_name => $field_data) {
-                if ($db->field_exists($field_name, $table_name)) {
-                    $db->drop_column($table_name, $field_name);
-                }
-            }
-        }
-    }
 
     settings_remove(
         [

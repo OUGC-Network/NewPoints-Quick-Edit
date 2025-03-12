@@ -2,7 +2,7 @@
 
 /***************************************************************************
  *
- *    NewPoints Quick Edit plugin (/inc/plugins/newpoints/languages/english/admin/newpoints_quickedit.lang.php)
+ *    NewPoints Quick Edit plugin (/inc/plugins/newpoints/plugins/ougc/QuickEdit/hooks/admin.php)
  *    Author: Omar Gonzalez
  *    Copyright: © 2012 Omar Gonzalez
  *
@@ -26,17 +26,46 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-$l = [
-    'newpoints_quick_edit' => 'Quick Edit',
-    'newpoints_quick_edit_desc' => "Quickly edit user's NewPoints data from the forums.",
+declare(strict_types=1);
 
-    'setting_group_newpoints_quick_edit' => 'Quick Edit',
-    'setting_group_newpoints_quick_edit_desc' => 'Settings for the Quick Edit feature.',
+namespace NewPoints\QuickEdit\Hooks\Admin;
 
-    'setting_newpoints_quick_edit_action_name' => 'Action Page Name',
-    'setting_newpoints_quick_edit_action_name_desc' => 'Select the action input name to use for this feature.',
-    'setting_newpoints_quick_edit_manage_groups' => 'Manage Groups',
-    'setting_newpoints_quick_edit_manage_groups_desc' => 'Select the groups that can manage the signature market.',
-    'setting_newpoints_quick_edit_menu_order' => 'Menu Order',
-    'setting_newpoints_quick_edit_menu_order_desc' => 'Order in the NewPoints menu item.',
-];
+use function NewPoints\Core\language_load;
+
+use const NewPoints\QuickEdit\ROOT;
+
+function newpoints_settings_rebuild_start(array &$hook_arguments): array
+{
+    language_load('quickedit');
+
+    $hook_arguments['settings_directories'][] = ROOT . '/settings';
+
+    return $hook_arguments;
+}
+
+function newpoints_admin_settings_intermediate(array &$hook_arguments): array
+{
+    language_load('quickedit');
+
+    unset($hook_arguments['active_plugins']['newpoints_quickedit']);
+
+    $hook_arguments['setting_groups_objects']['quick_edit'] = [];
+
+    return $hook_arguments;
+}
+
+function newpoints_admin_settings_commit_start(array &$setting_groups_objects): array
+{
+    language_load('quickedit');
+
+    $setting_groups_objects['quick_edit'] = [];
+
+    return $setting_groups_objects;
+}
+
+function newpoints_templates_rebuild_start(array &$hook_arguments): array
+{
+    $hook_arguments['templates_directories']['quickedit'] = ROOT . '/templates';
+
+    return $hook_arguments;
+}

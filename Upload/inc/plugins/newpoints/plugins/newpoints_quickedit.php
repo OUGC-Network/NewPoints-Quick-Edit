@@ -2,13 +2,13 @@
 
 /***************************************************************************
  *
- *    Newpoints Quick Edit plugin (/inc/plugins/newpoints/plugins/newpoints_quickedit.php)
+ *    NewPoints Quick Edit plugin (/inc/plugins/newpoints/plugins/newpoints_quickedit.php)
  *    Author: Omar Gonzalez
  *    Copyright: © 2012 Omar Gonzalez
  *
  *    Website: https://ougc.network
  *
- *    Quickly edit user's Newpoints data from the forums.
+ *    Quickly edit user's NewPoints data from the forums.
  *
  ***************************************************************************
  ****************************************************************************
@@ -28,30 +28,31 @@
 
 declare(strict_types=1);
 
-use function Newpoints\Core\templates_get;
-use function Newpoints\QuickEdit\Admin\plugin_activation;
-use function Newpoints\QuickEdit\Admin\plugin_information;
-use function Newpoints\QuickEdit\Admin\plugin_is_installed;
-use function Newpoints\QuickEdit\Admin\plugin_uninstallation;
-use function Newpoints\Core\add_hooks;
+use function NewPoints\QuickEdit\Admin\plugin_activation;
+use function NewPoints\QuickEdit\Admin\plugin_information;
+use function NewPoints\QuickEdit\Admin\plugin_is_installed;
+use function NewPoints\QuickEdit\Admin\plugin_uninstallation;
+use function NewPoints\Core\add_hooks;
 
-use const Newpoints\QuickEdit\ROOT;
-use const Newpoints\ROOT_PLUGINS;
+use const NewPoints\QuickEdit\ROOT;
+use const NewPoints\ROOT_PLUGINS;
 
 defined('IN_MYBB') || die('Direct initialization of this file is not allowed.');
 
-define('Newpoints\QuickEdit\ROOT', ROOT_PLUGINS . '/ougc/QuickEdit');
+define('NewPoints\QuickEdit\ROOT', ROOT_PLUGINS . '/QuickEdit');
+
+require_once ROOT . '/core.php';
 
 if (defined('IN_ADMINCP')) {
     require_once ROOT . '/admin.php';
 
     require_once ROOT . '/hooks/admin.php';
 
-    add_hooks('Newpoints\QuickEdit\Hooks\Admin');
+    add_hooks('NewPoints\QuickEdit\Hooks\Admin');
 } else {
     require_once ROOT . '/hooks/forum.php';
 
-    add_hooks('Newpoints\QuickEdit\Hooks\Forum');
+    add_hooks('NewPoints\QuickEdit\Hooks\Forum');
 }
 
 function newpoints_quickedit_info(): array
@@ -72,9 +73,4 @@ function newpoints_quickedit_uninstall(): bool
 function newpoints_quickedit_is_installed(): bool
 {
     return plugin_is_installed();
-}
-
-function newpoints_quickedit_get_template(string $template_name = '', bool $enable_html_comments = true): string
-{
-    return templates_get($template_name, $enable_html_comments, ROOT, 'quickedit_');
 }
