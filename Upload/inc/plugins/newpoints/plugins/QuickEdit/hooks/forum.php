@@ -115,6 +115,7 @@ function newpoints_default_menu(array &$menu_items): array
         $menu_items[90] = [
             'action' => 'quick_edit',
             'lang_string' => 'newpoints_quickedit_newpoints_menu',
+            'category' => 'user'
         ];
     }
 
@@ -183,6 +184,8 @@ function newpoints_terminate(): bool
         $redirect_url = get_profile_link($user_id);
     }
 
+    //$redirect_url = url_handler_build(['action' => 'quick_edit', 'uid' => $user_id, 'pid' => $post_id]);
+
     $hook_arguments['redirect_url'] = &$redirect_url;
 
     $user_points = (float)$user_data['newpoints'];
@@ -197,7 +200,7 @@ function newpoints_terminate(): bool
         $input_user_points = $mybb->get_input('user_points', MyBB::INPUT_FLOAT);
 
         if (!empty($input_user_points)) {
-            if ($mybb->get_input('user_points_subtract', MyBB::INPUT_INT) == 1) {
+            if ($mybb->get_input('user_points_subtract', MyBB::INPUT_INT) === 1) {
                 points_subtract($user_id, $input_user_points);
 
                 log_add(
@@ -254,7 +257,7 @@ function newpoints_terminate(): bool
 
     $form_title = $lang->sprintf($lang->newpoints_quick_edit_table_title, $user_name);
 
-    $page_url = url_handler_build(['action' => 'quick_edit', 'uid' => $current_user_id, 'pid' => $post_id]);
+    $page_url = url_handler_build(['action' => 'quick_edit', 'uid' => $user_id, 'pid' => $post_id]);
 
     add_breadcrumb($lang->newpoints_quick_edit_page_nav, $page_url);
 
