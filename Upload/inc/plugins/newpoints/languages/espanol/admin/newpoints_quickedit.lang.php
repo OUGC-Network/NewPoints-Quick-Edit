@@ -27,16 +27,16 @@
  ****************************************************************************/
 
 $l = [
-    'newpoints_quick_edit' => 'Quick Edit',
-    'newpoints_quick_edit_desc' => "Quickly edit user's NewPoints data from the forums.",
+    'newpoints_quick_edit' => 'Edición Rápida',
+    'newpoints_quick_edit_desc' => 'Edita rápidamente los datos de NewPoints del usuario desde los foros.',
 
-    'setting_group_newpoints_quick_edit' => 'Quick Edit',
-    'setting_group_newpoints_quick_edit_desc' => 'Settings for the Quick Edit feature.',
+    'setting_group_newpoints_quick_edit' => 'Edición Rápida',
+    'setting_group_newpoints_quick_edit_desc' => 'Configuraciones para la función de Edición Rápida.',
 
-    'setting_newpoints_quick_edit_action_name' => 'Action Page Name',
-    'setting_newpoints_quick_edit_action_name_desc' => 'Select the action input name to use for this feature.',
-    'setting_newpoints_quick_edit_manage_groups' => 'Manage Groups',
-    'setting_newpoints_quick_edit_manage_groups_desc' => 'Select the groups that can manage the signature market.',
-    'setting_newpoints_quick_edit_menu_order' => 'Menu Order',
-    'setting_newpoints_quick_edit_menu_order_desc' => 'Order in the NewPoints menu item.',
+    'setting_newpoints_quick_edit_action_name' => 'Nombre de la Página de Acción',
+    'setting_newpoints_quick_edit_action_name_desc' => 'Selecciona el nombre de entrada de acción a utilizar para esta función.',
+    'setting_newpoints_quick_edit_manage_groups' => 'Gestionar Grupos',
+    'setting_newpoints_quick_edit_manage_groups_desc' => 'Selecciona los grupos que pueden gestionar el mercado de firmas.',
+    'setting_newpoints_quick_edit_menu_order' => 'Orden del Menú',
+    'setting_newpoints_quick_edit_menu_order_desc' => 'Orden en el elemento del menú de NewPoints.',
 ];
