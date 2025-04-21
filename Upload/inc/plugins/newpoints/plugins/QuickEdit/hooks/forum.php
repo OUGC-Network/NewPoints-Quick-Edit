@@ -72,7 +72,7 @@ function postbit50(array &$post_data): array
 
     $post_data['newpoints_quick_edit'] = '';
 
-    if (!is_member(get_setting('quick_edit_manage_groups'))) {
+    if (is_member(get_setting('quick_edit_manage_groups'))) {
         global $lang;
 
         language_load('quickedit');
@@ -98,7 +98,7 @@ function member_profile_end(): bool
 
     $memprofile['newpoints_quick_edit'] = '';
 
-    if (!is_member(get_setting('quick_edit_manage_groups'))) {
+    if (is_member(get_setting('quick_edit_manage_groups'))) {
         global $lang;
 
         language_load('quickedit');
