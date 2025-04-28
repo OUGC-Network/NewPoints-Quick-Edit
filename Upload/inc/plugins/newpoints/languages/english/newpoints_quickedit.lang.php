@@ -47,7 +47,7 @@ $l = [
 
     'newpoints_quick_edit_wol_location' => '<a href="{1}/{2}">Quick editing</a> a user',
 
-    'newpoints_sticky_market_page_logs_primary' => 'Moderator: {1}',
+    'newpoints_quick_edit_page_logs_primary' => 'Moderator: {1}',
 
     'newpoints_quick_edit_logs_quick_edit_points_add' => 'Quick Points Addition',
     'newpoints_quick_edit_logs_quick_edit_points_subtract' => 'Quick Points Subtraction',

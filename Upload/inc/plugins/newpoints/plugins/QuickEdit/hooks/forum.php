@@ -348,7 +348,7 @@ function newpoints_logs_log_row(): bool
         );
 
         $log_primary = $lang->sprintf(
-            $lang->newpoints_sticky_market_page_logs_primary,
+            $lang->newpoints_quick_edit_page_logs_primary,
             $log_primary
         );
     }
